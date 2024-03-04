@@ -1,0 +1,7 @@
+---
+- name: Actualizar repositorios
+  hosts: all
+  become: yes
+
+  roles:
+          - upgrade
