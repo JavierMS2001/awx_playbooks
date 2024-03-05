@@ -7,7 +7,7 @@
   retries: 3
   delay: 10
 
-- name: Iniciar servicio httpd Debian
+- name: Iniciar servicio httpd CentOS
   service:
           name: httpd
           state: started
@@ -16,9 +16,18 @@
 - name: Abrir puerto para el servicio httpd
   firewalld:
           service: http
-          permanent: true
+          permanent: truea
           state: enabled
+
+- name: Deshabilitar SeLinux
+  template:
+          src: files/config
+          dest: /etc/selinux/config
+          owner: root
+          group: root
+          mode: '0644'
   notify:
-          - reiniciar firewalld
-          - reiniciar http
+          - "reiniciar servidor"
+          - "reiniciar firewalld"
+          - "reiniciar http"
 

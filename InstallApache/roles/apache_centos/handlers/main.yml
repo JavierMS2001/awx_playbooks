@@ -1,11 +1,20 @@
 ---
 
-- name: reiniciar firewalld
+- name: Reiniciando firewall
   service:
           name: firewalld
           state: reloaded
+  listen: "reiniciar firewalld"
 
-- name: reiniciar http
+- name: Iniciando servicio httpd
   service:
           name: httpd
-          state: restarted
+          state: started
+          enabled: yes
+  listen: "reiniciar http"
+
+- name: Reiniciar servidor
+  reboot:
+          reboot_timeout: 30
+          post_reboot_delay: 30
+  listen: "reiniciar servidor"

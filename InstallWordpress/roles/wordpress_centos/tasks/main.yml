@@ -36,5 +36,5 @@
           group: root
           mode: '0644'
   notify:
-          - reiniciar servidor
-          - iniciar httpd
+          - "reiniciar servidor"
+          - "iniciar httpd"

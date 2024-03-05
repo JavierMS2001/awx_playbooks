@@ -1,12 +1,15 @@
 ---
 
-- name: reiniciar servidor
+- name: Reiniciar servidor
   reboot:
           reboot_timeout: 30
           post_reboot_delay: 30
+  listen: "reiniciar servidor"
 
-- name: iniciar httpd
+- name: Iniciar servicio httpd
   service:
           name: httpd
           state: started
+          enabled: yes
+  listen: "iniciar httpd"
 

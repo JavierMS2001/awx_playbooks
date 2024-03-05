@@ -24,4 +24,4 @@
   args:
           chdir: /etc/apache2/sites-available/
           creates: /etc/apache2/sites-enabled/proxy.conf
-  notify: reiniciar apache
+  notify: "reiniciar apache"

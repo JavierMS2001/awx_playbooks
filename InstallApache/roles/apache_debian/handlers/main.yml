@@ -1,11 +1,13 @@
 ---
 
-- name: reiniciar firewall
+- name: Reiniciar firewall
   ufw:
           state: reloaded
+  listen: "reiniciar firewall"
 
-- name: reiniciar apache
+- name: Reiniciar servicio apache
   become: yes
   service:
           name: apache2
           state: restarted
+  listen: "reiniciar apache"

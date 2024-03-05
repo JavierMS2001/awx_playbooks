@@ -1,6 +1,6 @@
 ---
 - name: Instalar Apache
-  hosts: apache
+  hosts: apache,wordpress
   become: true
 
   roles:

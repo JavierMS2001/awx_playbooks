@@ -1,6 +1,7 @@
 ---
 
-- name: reiniciar apache
+- name: Reiniciar apache
   service:
           name: apache2
           state: restarted
+  listen: "reiniciar apache"
