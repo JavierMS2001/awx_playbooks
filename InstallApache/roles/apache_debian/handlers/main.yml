@@ -3,11 +3,11 @@
 - name: Reiniciar firewall
   ufw:
           state: reloaded
-  listen: "reiniciar firewall"
+  listen: "reiniciar firewall debian"
 
 - name: Reiniciar servicio apache
   become: yes
   service:
           name: apache2
           state: restarted
-  listen: "reiniciar apache"
+  listen: "reiniciar apache debian"
