@@ -1,0 +1,5 @@
+---
+centos_pkgs: null
+deb_pkgs: null
+list: null
+reboot: "N"

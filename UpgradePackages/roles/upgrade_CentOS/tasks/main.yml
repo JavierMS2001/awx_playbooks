@@ -1,0 +1,27 @@
+---
+- name: Crear lista
+  set_fact:
+    list: "{{ centos_pkgs.split(',') }}"
+  when: centos_pkgs | default("null", false)
+
+- name: Instalar dnf
+  yum:
+    name: dnf
+    state: latest
+
+- name: Actualizar EPEL Repository
+  dnf:
+    name: epel-release
+    state: latest
+
+- name: Actualizar paquetes CentOS
+  yum:
+    name: '*'
+    state: latest
+    exclude: 
+      - "{{ list }}*"
+
+- debug:
+    msg: "{{ item }} no actualizado."
+  with_items: "{{ list }}"
+  when: centos_pkgs | default("null", false)

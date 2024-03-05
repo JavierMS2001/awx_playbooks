@@ -1,0 +1,35 @@
+---
+- name: Create list
+  set_fact:
+    list: "{{ deb_pkgs.split(',') }}"
+  when: deb_pkgs | default("null", false)
+
+- name: Debian - Prevent packages from being upgraded
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  with_items:
+    - "{{ list }}"
+  when: deb_pkgs | default("null", false)
+
+- name: Debian - Update cache
+  apt:
+    update_cache: yes
+
+- name: Debian - Upgrade all packages, excluding those indicated
+  apt:
+    name: "*"
+    state: latest
+
+- debug:
+    msg: "{{ item }} not upgraded"
+  with_items: "{{ list }}"
+  when: deb_pkgs | default("null", false)
+
+- name: Debian - Allow packages to be upgraded again
+  dpkg_selections:
+    name: "{{ item }}"
+    selection: install
+  with_items:
+    - "{{ list }}"
+  when: deb_pkgs | default("null", false)
