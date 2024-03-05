@@ -1,0 +1,11 @@
+---
+
+- name: reiniciar servidor
+  reboot:
+          reboot_timeout: 30
+          post_reboot_delay: 30
+
+- name: iniciar httpd
+  service:
+          name: httpd
+          state: started

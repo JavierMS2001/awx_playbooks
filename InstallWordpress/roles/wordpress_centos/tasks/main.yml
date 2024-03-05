@@ -1,0 +1,40 @@
+---
+
+- name: Instalar paquetes requeridos
+  yum:
+          name: "{{ item  }}"
+          state: latest
+  loop:
+        - php
+        - php-gd
+        - php-xml
+        - php-mbstring
+        - php-mysqli
+
+- name: Descargar y descomprimir WordPress para CentOS
+  unarchive:
+          src: https://wordpress.org/latest.tar.gz
+          dest: /var/www/html/
+          remote_src: yes
+          owner: apache
+          group: apache
+          mode: '0755'
+
+- name: Establecer configuración WordPress CentOS
+  template:
+          src: files/wp-config.php
+          dest: /var/www/html/wordpress/wp-config.php
+          owner: apache
+          group: apache
+          mode: '0644'
+
+- name: Deshabilitar SeLinux
+  template:
+          src: files/config
+          dest: /etc/selinux/config
+          owner: root
+          group: root
+          mode: '0644'
+  notify:
+          - reiniciar servidor
+          - iniciar httpd
