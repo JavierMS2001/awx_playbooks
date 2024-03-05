@@ -16,7 +16,7 @@
 - name: Abrir puerto para el servicio httpd
   firewalld:
           service: http
-          permanent: truea
+          permanent: true
           state: enabled
 
 - name: Deshabilitar SeLinux
