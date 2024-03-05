@@ -34,5 +34,5 @@
           rule: allow
           port: "22"
   notify:
-          - "reiniciar firewall debian"
-          - "reiniciar apache debian"
+          - "reiniciar firewall"
+          - "reiniciar apache"
