@@ -23,8 +23,6 @@
   dnf:
           name: '*'
           update_cache: yes
-          exclude:
-            - "{{ list }}*"
   retries: 3
   delay: 10
 
