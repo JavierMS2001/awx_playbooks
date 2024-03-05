@@ -4,6 +4,8 @@
   yum:
           name: httpd
           state: latest
+  retries: 3
+  delay: 10
 
 - name: Iniciar servicio httpd Debian
   service:
