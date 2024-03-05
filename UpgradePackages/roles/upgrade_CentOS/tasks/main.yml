@@ -19,7 +19,7 @@
   delay: 10
 
 - name: Actualizar paquetes CentOS
-  yum:
+  dnf:
     name: '*'
     state: latest
     exclude: 
