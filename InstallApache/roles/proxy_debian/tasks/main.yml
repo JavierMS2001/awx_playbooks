@@ -2,7 +2,7 @@
 
 - name: Establecer la configuración Proxy Debian
   template:
-          src: file/proxy.conf
+          src: files/proxy.conf
           dest: /etc/apache2/sites-available/proxy.conf
           owner: root
           group: root
