@@ -1,0 +1,43 @@
+---
+- name: Instalar MariaDB y módulos necesarios - CentOS
+  yum:
+        name:
+                - mariadb-server
+                - python3
+                - python3-PyMySQL
+        state: latest
+  notify: 
+        - "reiniciar mariadb"
+        - "establecer password"
+
+- name: Crear base de datos para Wordpress
+  mysql_db:
+          name: bdwordpress
+          login_user: root
+          login_password: vagrant
+          login_host: localhost
+          state: present
+
+- name: Crear usuario para la base de datos
+  mysql_user:
+          name: wordpress-user
+          password: 1234
+          priv: 'bdwordpress.*:ALL,GRANT'
+          host: '%'
+          login_user: root
+          login_password: vagrant
+          login_host: localhost
+          state: present
+
+- name: Habilitar el servicio mysql en firewalld CentOS
+  firewalld:
+          service: mysql
+          permanent: true
+          state: enabled
+
+- name: Abrir el puerto 3306 en firewalld CentOS
+  firewalld:
+          port: 3306/tcp
+          permanent: true
+          state: enabled
+  notify: "reiniciar firewall"

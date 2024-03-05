@@ -1,0 +1,53 @@
+---
+
+- name: Instalar MariaDB y módulos necesarios - Debian
+  apt:
+          name:
+                  - mariadb-server
+                  - python3
+                  - python3-mysqldb
+                  - ufw
+          state: present
+  notify: 
+  - "iniciar mariadb"
+  - "establecer password"
+  - "habilitar ufw"
+
+- name: Establecer configuración Mariadb - Debian
+  template:
+          src: files/50-server.cnf
+          dest: /etc/mysql/mariadb.conf.d/50-server.cnf
+          owner: root
+          group: root
+          mode: '0755'
+  notify: "reiniciar mariadb"
+
+- name: Crear base de datos para Wordpress
+  mysql_db:
+          name: bdwordpress
+          login_user: root
+          login_password: vagrant
+          login_host: localhost
+          state: present
+
+- name: Crear usuario para la base de datos
+  mysql_user:
+          name: wordpress-user
+          password: 1234
+          priv: 'bdwordpress.*:ALL,GRANT'
+          host: '%'
+          login_user: root
+          login_password: vagrant
+          login_host: localhost
+          state: present
+
+- name: Habilitar puerto 3306 ufw Debian
+  ufw:
+          rule: allow
+          port: "3306"
+
+- name: Habilitar puerto 22 ufw Debian
+  ufw:
+          rule: allow
+          port: "22"
+  notify: "recargar ufw"

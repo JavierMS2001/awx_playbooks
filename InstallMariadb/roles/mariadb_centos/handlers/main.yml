@@ -1,0 +1,21 @@
+---
+
+- name: Reiniciar MariaDB
+  service:
+          name: mariadb
+          enabled: true
+          state: started
+  listen: "reiniciar mariadb"
+
+- name: Ejecutar mysql_secure_installation y establecer una contraseña.
+  shell: |
+          echo -e "\nn\nY\nvagrant\nvagrant\nY\nn\nY\nY\n" | sudo mysql_secure_installation
+  args:
+   executable: /bin/bash
+  listen: "establecer password"
+
+- name: Reiniciar firewall
+  systemd:
+          name: firewalld
+          state: restarted
+  listen: "reiniciar firewall"
