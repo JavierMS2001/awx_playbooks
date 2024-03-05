@@ -1,0 +1,38 @@
+---
+
+- name: Instalar apache
+  apt:
+          name: apache2
+          state: latest
+
+- name: Iniciar servicio apache
+  service:
+          name: apache2
+          state: started        
+
+- name: Instalar ufw en Debian
+  apt:
+          name: ufw
+          state: present      
+
+- name: Habilitar ufw
+  ufw:
+          state: enabled
+
+- name: Abrir puerto 80 con ufw en Debian
+  ufw:
+          rule: allow
+          port: "80"
+
+- name: Abrir puerto 443 con ufw en Debian
+  ufw:
+          rule: allow
+          port: "443"
+
+- name: Abrir puerto 22 con ufw en Debian
+  ufw:
+          rule: allow
+          port: "22"
+  notify:
+          - reiniciar firewall
+          - reiniciar apache

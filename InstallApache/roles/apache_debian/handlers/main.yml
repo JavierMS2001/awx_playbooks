@@ -1,0 +1,11 @@
+---
+
+- name: reiniciar firewall
+  ufw:
+          state: reloaded
+
+- name: reiniciar apache
+  become: yes
+  service:
+          name: apache2
+          state: restarted

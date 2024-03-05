@@ -1,0 +1,27 @@
+---
+
+- name: Establecer la configuración Proxy Debian
+  template:
+          src: file/proxy.conf
+          dest: /etc/apache2/sites-available/proxy.conf
+          owner: root
+          group: root
+          mode: '0644'
+
+- name: Habilitar módulo proxy Debian
+  apache2_module:
+          name: proxy
+          state: present
+
+- name: Habilitar módulo proxy_http Debian
+  apache2_module:
+          name: proxy_http
+          state: present
+  notify: reiniciar apache
+
+- name: Habilitar configuración del proxy
+  command: a2ensite proxy.conf
+  args:
+          chdir: /etc/apache2/sites-available/
+          creates: /etc/apache2/sites-enabled/proxy.conf
+  notify: reiniciar apache

@@ -1,0 +1,6 @@
+---
+
+- name: reiniciar apache
+  service:
+          name: apache2
+          state: restarted
