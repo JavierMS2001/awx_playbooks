@@ -1,0 +1,16 @@
+---
+- name: Reboot system
+  command: reboot
+  async: 60
+  poll: 0
+  register: status
+
+- debug:
+    msg: "El sistema se está reiniciando..."
+
+- wait_for_connection:
+    delay: 1
+    timeout: 300
+
+- debug:
+    msg: "El sistema ha sido reiniciado."
