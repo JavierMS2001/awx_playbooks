@@ -24,8 +24,6 @@
     state: latest
     exclude: 
       - "{{ list }}*"
-  retries: 3
-  delay: 10
 
 - debug:
     msg: "{{ item }} no actualizado."
