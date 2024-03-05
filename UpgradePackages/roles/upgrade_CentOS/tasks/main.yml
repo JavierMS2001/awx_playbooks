@@ -8,11 +8,15 @@
   yum:
     name: dnf
     state: latest
+  retries: 3
+  delay: 10
 
 - name: Actualizar EPEL Repository
   dnf:
     name: epel-release
     state: latest
+  retries: 3
+  delay: 10
 
 - name: Actualizar paquetes CentOS
   yum:
@@ -20,6 +24,8 @@
     state: latest
     exclude: 
       - "{{ list }}*"
+  retries: 3
+  delay: 10
 
 - debug:
     msg: "{{ item }} no actualizado."
