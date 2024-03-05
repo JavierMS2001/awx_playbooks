@@ -18,6 +18,16 @@
   retries: 3
   delay: 10
 
+- name: Actualizar datos del repositorio
+  become: yes
+  dnf:
+          name: '*'
+          update_cache: yes
+          exclude:
+            - "{{ list }}*"
+  retries: 3
+  delay: 10
+
 - name: Actualizar paquetes CentOS
   yum:
     name: '*'

@@ -7,14 +7,3 @@
           owner: root
           group: root
           mode: '0644'
-
-- name: Deshabilitar SeLinux
-  template:
-          src: files/config
-          dest: /etc/selinux/config
-          owner: root
-          group: root
-          mode: '0644'
-  notify: 
-    - "reiniciar servidor"
-    - "iniciar httpd"
