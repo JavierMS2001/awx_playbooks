@@ -6,18 +6,14 @@
           state: latest
   retries: 3
   delay: 10
-
-- name: Iniciar servicio httpd CentOS
-  service:
-          name: httpd
-          state: started
-
+  notify: "reiniciar http"
 
 - name: Abrir puerto para el servicio httpd
   firewalld:
           service: http
           permanent: true
           state: enabled
+  notify: "reiniciar firewalld"
 
 - name: Deshabilitar SeLinux
   template:
@@ -28,6 +24,5 @@
           mode: '0644'
   notify:
           - "reiniciar servidor"
-          - "reiniciar firewalld"
           - "reiniciar http"
 
