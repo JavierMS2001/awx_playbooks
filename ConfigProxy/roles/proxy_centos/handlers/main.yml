@@ -1,0 +1,6 @@
+---
+- name: Reiniciar servicio httpd
+  service:
+          name: httpd
+          state: restarted
+  listen: "reiniciar httpd"
