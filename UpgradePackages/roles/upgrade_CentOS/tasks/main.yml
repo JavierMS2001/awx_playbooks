@@ -18,11 +18,18 @@
   retries: 3
   delay: 10
 
-- name: Actualizar paquetes CentOS
-  dnf:
-    name: '*'
+  #- name: Actualizar paquetes CentOS
+  #  dnf:
+  #    name: '*'
+  #    state: latest
+  #    exclude: 
+  #      - "{{ list }}*"
+
+- name: RedHat - Upgrade all packages, excluding those indicated
+  yum:
+    name: "*"
     state: latest
-    exclude: 
+    exclude:
       - "{{ list }}*"
 
 - debug:
