@@ -9,8 +9,13 @@
                   - ufw
           state: present
   notify: 
-  - "restart mariadb"
   - "enable ufw"
+
+- name: Iniciar MariaDB
+  service:
+          name: mariadb
+          enabled: true
+          state: restarted
 
 - name: Ejecutar mysql_secure_installation y establecer una contraseña.
   shell: |
