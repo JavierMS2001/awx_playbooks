@@ -8,8 +8,10 @@
                   - python3-mysqldb
                   - ufw
           state: present
-  notify: 
-  - "enable ufw"
+
+- name: Habilitar UFW
+  ufw:
+          state: enabled
 
 - name: Iniciar MariaDB
   service:
