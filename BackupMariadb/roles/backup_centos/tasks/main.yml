@@ -25,21 +25,21 @@
 
 - name: Buscar archivos en el directorio
       find:
-        paths: "/ruta/al/directorio"  # Ruta al directorio que deseas buscar
-        patterns: "*"  # Patrón para encontrar todos los archivos
-        file_type: file  # Buscar solo archivos, no directorios ni enlaces simbólicos
-      register: archivos_encontrados
+        paths: "{{ backups_dir }}/CentOS-server/"
+        patterns: "*.sql" 
+        file_type: file
+      register: backups
 
 - name: Ordenar archivos por fecha de modificación
   set_fact:
-    archivos_ordenados: "{{ archivos_encontrados.files | sort(attribute='mtime') }}"
+    order_backups: "{{ backups.files | sort(attribute='mtime') }}"
 
 - name: Eliminar archivos más antiguos si hay más de cinco
   file:
     path: "{{ item.path }}"
     state: absent
-  loop: "{{ archivos_ordenados | reverse | map(attribute='path') | list }}"
-  when: archivos_ordenados | length > 5
+  loop: "{{ order_backups | reverse | map(attribute='path') | list }}"
+  when: order_backups | length > 5
 
 - name: Importar backup al control node CentOS
   fetch: 
