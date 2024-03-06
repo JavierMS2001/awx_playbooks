@@ -24,6 +24,7 @@
 - name: Importar backup al control node Debian
   fetch:
         src: "/backup/bdwordpress-Debian_backup_{{ timestamp }}.sql"
-        dest: "/tmp/"
+        #        dest: "/bachup/bdwordpress-Debian/"
+        dest: "{{ backups_dir }}/bdwordpress-Debian/"
         flat: yes
         when: result is success
