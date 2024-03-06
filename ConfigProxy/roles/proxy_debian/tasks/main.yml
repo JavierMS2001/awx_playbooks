@@ -17,7 +17,11 @@
   apache2_module:
           name: proxy_http
           state: present
-  notify: "restart apache"
+
+- name: Reiniciar apache
+  service:
+          name: apache2
+          state: restarted
 
 - name: Habilitar configuración del proxy
   command: a2ensite proxy.conf
