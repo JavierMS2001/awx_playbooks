@@ -34,5 +34,5 @@
           rule: allow
           port: "22"
   notify:
-          - "reiniciar firewall"
-          - "reiniciar apache"
+          - "restart firewall"
+          - "restart apache"

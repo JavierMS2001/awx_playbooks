@@ -3,4 +3,4 @@
   service:
           name: httpd
           state: restarted
-  listen: "reiniciar httpd"
+  listen: "restart httpd"

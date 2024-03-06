@@ -9,9 +9,9 @@
                   - ufw
           state: present
   notify: 
-  - "iniciar mariadb"
-  - "establecer password"
-  - "habilitar ufw"
+  - "restart mariadb"
+  - "set password"
+  - "enable ufw"
 
 - name: Establecer configuración Mariadb - Debian
   template:
@@ -20,7 +20,7 @@
           owner: root
           group: root
           mode: '0755'
-  notify: "reiniciar mariadb"
+  notify: "restart mariadb"
 
 - name: Crear base de datos para Wordpress
   mysql_db:
@@ -50,4 +50,4 @@
   ufw:
           rule: allow
           port: "22"
-  notify: "recargar ufw"
+  notify: "reload ufw"

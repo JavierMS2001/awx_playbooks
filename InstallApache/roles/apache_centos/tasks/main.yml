@@ -6,14 +6,14 @@
           state: latest
   retries: 3
   delay: 10
-  notify: "reiniciar http"
+  notify: "restart http"
 
 - name: Abrir puerto para el servicio httpd
   firewalld:
           service: http
           permanent: true
           state: enabled
-  notify: "reiniciar firewalld"
+  notify: "restart firewalld"
 
 - name: Deshabilitar SeLinux
   template:
@@ -23,6 +23,6 @@
           group: root
           mode: '0644'
   notify:
-          - "reiniciar servidor"
-          - "reiniciar http"
+          - "restart server"
+          - "restart http"
 

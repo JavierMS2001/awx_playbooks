@@ -4,17 +4,17 @@
   service:
           name: firewalld
           state: reloaded
-  listen: "reiniciar firewalld"
+  listen: "restart firewalld"
 
 - name: Iniciando servicio httpd
   service:
           name: httpd
           state: started
           enabled: yes
-  listen: "reiniciar http"
+  listen: "restart http"
 
 - name: Reiniciar servidor
   reboot:
           reboot_timeout: 30
           post_reboot_delay: 30
-  listen: "reiniciar servidor"
+  listen: "restart server"

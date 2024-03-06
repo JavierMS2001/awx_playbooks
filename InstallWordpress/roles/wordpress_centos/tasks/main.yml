@@ -10,7 +10,7 @@
         - php-xml
         - php-mbstring
         - php-mysqli
-  notify: "reiniciar httpd"
+  notify: "restart httpd"
 
 - name: Descargar y descomprimir WordPress para CentOS
   unarchive:
@@ -37,5 +37,5 @@
           group: root
           mode: '0644'
   notify:
-          - "reiniciar servidor"
-          - "iniciar httpd"
+          - "restart server"
+          - "start httpd"

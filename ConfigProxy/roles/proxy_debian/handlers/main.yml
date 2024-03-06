@@ -4,4 +4,4 @@
   service:
           name: apache2
           state: restarted
-  listen: "reiniciar apache"
+  listen: "restart apache"

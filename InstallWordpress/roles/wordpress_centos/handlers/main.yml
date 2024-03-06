@@ -4,16 +4,16 @@
   reboot:
           reboot_timeout: 30
           post_reboot_delay: 30
-  listen: "reiniciar servidor"
+  listen: "restart server"
 
 - name: Iniciar servicio httpd
   service:
           name: httpd
           state: started
-  listen: "iniciar httpd"
+  listen: "start httpd"
 
 - name: Reiniciar servicio httpd
   service:
           name: httpd
           state: restarted
-  listen: "reiniciar httpd"
+  listen: "restart httpd"

@@ -5,21 +5,21 @@
           name: mariadb
           enabled: true
           state: started
-  listen: "iniciar mariadb"
+  listen: "restart mariadb"
 
 - name: Ejecutar mysql_secure_installation y establecer una contraseña.
   shell: |
           echo -e "\nn\nY\nvagrant\nvagrant\nY\nn\nY\nY\n" | sudo mysql_secure_installation
   args:
    executable: /bin/bash
-  listen: "establecer password"
+  listen: "set password"
 
 - name: Habilitar UFW
   ufw:
           state: enabled
-  listen: "habilitar ufw"
+  listen: "enable ufw"
 
 - name: Recargar configuración del firewall
   ufw:
           state: reloaded
-  listen: "recargar ufw"
+  listen: "reload ufw"

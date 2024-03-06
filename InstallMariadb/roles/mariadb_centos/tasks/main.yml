@@ -7,8 +7,8 @@
                 - python3-PyMySQL
         state: latest
   notify: 
-        - "reiniciar mariadb"
-        - "establecer password"
+        - "restart mariadb"
+        - "set password"
 
 - name: Crear base de datos para Wordpress
   mysql_db:
@@ -40,4 +40,4 @@
           port: 3306/tcp
           permanent: true
           state: enabled
-  notify: "reiniciar firewall"
+  notify: "restart firewall"
