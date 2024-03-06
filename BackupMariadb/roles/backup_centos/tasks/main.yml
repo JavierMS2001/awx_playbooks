@@ -23,10 +23,28 @@
           path: "/backup/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
   register: result
 
+- name: Buscar archivos en el directorio
+      find:
+        paths: "/ruta/al/directorio"  # Ruta al directorio que deseas buscar
+        patterns: "*"  # Patrón para encontrar todos los archivos
+        file_type: file  # Buscar solo archivos, no directorios ni enlaces simbólicos
+      register: archivos_encontrados
+
+- name: Ordenar archivos por fecha de modificación
+  set_fact:
+    archivos_ordenados: "{{ archivos_encontrados.files | sort(attribute='mtime') }}"
+
+- name: Eliminar archivos más antiguos si hay más de cinco
+  file:
+    path: "{{ item.path }}"
+    state: absent
+  loop: "{{ archivos_ordenados | reverse | map(attribute='path') | list }}"
+  when: archivos_ordenados | length > 5
+
 - name: Importar backup al control node CentOS
   fetch: 
         src: "/backup/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
         #        dest: "/backups/bdwordpress-CentOS/"
-        dest: "{{ backups_dir }}/bdwordpress-CentOS/"
+        dest: "{{ backups_dir }}/CentOS-server/"
         flat: yes
         when: result is success 

@@ -25,6 +25,6 @@
   fetch:
         src: "/backup/bdwordpress-Debian_backup_{{ timestamp }}.sql"
         #        dest: "/bachup/bdwordpress-Debian/"
-        dest: "{{ backups_dir }}/bdwordpress-Debian/"
+        dest: "{{ backups_dir }}/Debian-server/"
         flat: yes
         when: result is success
