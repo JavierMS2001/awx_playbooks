@@ -1,0 +1,38 @@
+---
+
+- name: Obtener la lista de backups de Debian
+  find:
+          paths: "{{ backups_dir }}/Debian-server/"
+          patterns: "*.sql"
+          file_type: file
+  register: debian_sql_files
+  delegate_to: localhost
+
+
+- name: Ordenar backups Debian
+  set_fact:
+          sorted_debian_sql_files: "{{ debian_sql_files.files | sort(attribute='mtime') | reverse }}"
+
+- name: Seleccionar ultima backup modificada Debian
+  set_fact:
+          latest_debian_sql_file: "{{ sorted_debian_sql_files[0] }}"
+
+- name: Crear directorio backup
+  become: true
+  file:
+          path: /backup
+          state: directory
+
+
+- name: Copiar backup a servidor remoto Debian
+  copy:
+          content: "{{ lookup('file', latest_debian_sql_file.path) }}"
+          dest: /backup/restore.sql
+
+- name: Restaurar base de datos
+  mysql_db:
+          login_user: wordpress-user
+          login_password: 1234
+          name: bdwordpress
+          state: import
+          target: /backup/restore.sql
