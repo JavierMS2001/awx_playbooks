@@ -8,7 +8,12 @@
         state: latest
   notify: 
         - "restart mariadb"
-        - "set password"
+
+- name: Ejecutar mysql_secure_installation y establecer una contraseña.
+  shell: |
+          echo -e "\nn\nY\nvagrant\nvagrant\nY\nn\nY\nY\n" | sudo mysql_secure_installation
+  args:
+   executable: /bin/bash
 
 - name: Crear base de datos para Wordpress
   mysql_db:
