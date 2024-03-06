@@ -32,7 +32,12 @@
           owner: root
           group: root
           mode: '0755'
-  notify: "restart mariadb"
+
+- name: Reiniciar MariaDB
+  service:
+          name: mariadb
+          enabled: true
+          state: restarted
 
 - name: Crear base de datos para Wordpress
   mysql_db:
