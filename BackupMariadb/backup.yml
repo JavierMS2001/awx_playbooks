@@ -1,0 +1,14 @@
+---
+
+- name: Backup DataBase Wordpress
+  hosts: mariadb
+  become: true
+
+  roles:
+          - role: backup_centos
+            when: ansible_distribution == 'CentOS'
+
+          - role: backup_debian
+            when: ansible_distribution == 'Debian'
+
+
