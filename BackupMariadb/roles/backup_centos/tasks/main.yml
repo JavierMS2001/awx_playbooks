@@ -24,11 +24,11 @@
   register: result
 
 - name: Buscar archivos en el directorio
-      find:
-        paths: "{{ backups_dir }}/CentOS-server/"
-        patterns: "*.sql" 
-        file_type: file
-      register: backups
+  find:
+    paths: "{{ backups_dir }}/CentOS-server/"
+    patterns: "*.sql" 
+    file_type: file
+  register: backups
 
 - name: Ordenar archivos por fecha de modificación
   set_fact:
