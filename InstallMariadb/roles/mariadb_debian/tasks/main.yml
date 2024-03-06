@@ -8,9 +8,16 @@
                   - python3-mysqldb
                   - ufw
           state: present
-  notify: 
-  - "restart mariadb"
-  - "enable ufw"
+
+- name: Habilitar UFW
+  ufw:
+          state: enabled
+
+- name: Iniciar MariaDB
+  service:
+          name: mariadb
+          enabled: true
+          state: restarted
 
 - name: Ejecutar mysql_secure_installation y establecer una contraseña.
   shell: |
@@ -25,7 +32,12 @@
           owner: root
           group: root
           mode: '0755'
-  notify: "restart mariadb"
+
+- name: Reiniciar MariaDB
+  service:
+          name: mariadb
+          enabled: true
+          state: restarted
 
 - name: Crear base de datos para Wordpress
   mysql_db:
