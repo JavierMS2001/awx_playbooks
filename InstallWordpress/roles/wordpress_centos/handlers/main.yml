@@ -11,3 +11,9 @@
           name: httpd
           state: started
   listen: "iniciar httpd"
+
+- name: Reiniciar servicio httpd
+  service:
+          name: httpd
+          state: restarted
+  listen: "reiniciar httpd"

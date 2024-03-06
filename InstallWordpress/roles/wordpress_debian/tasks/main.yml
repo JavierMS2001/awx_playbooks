@@ -10,7 +10,7 @@
         - php-xml
         - php-mbstring
         - php-mysql
-
+  notify: "reiniciar apache"
 - name: Descargar archivo de WordPress Debian
   get_url:
           url: "https://wordpress.org/latest.tar.gz"
@@ -32,4 +32,3 @@
           owner: www-data
           group: www-data
           mode: '0755'
-  notify: "reiniciar apache"
