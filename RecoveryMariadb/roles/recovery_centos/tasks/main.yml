@@ -24,9 +24,9 @@
   set_fact:
           latest_centos_sql_file: "{{ sorted_centos_sql_files[0] }}"
 
-- name: Debug latest_centos_sql_file
+- name: Mostrar contenido del archivo latest_centos_sql_file
   debug:
-    var: latest_centos_sql_file
+    msg: "{{ lookup('file', latest_centos_sql_file.path) }}"
 
 - name: Crear directorio backup
   become: true
