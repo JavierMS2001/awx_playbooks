@@ -1,0 +1,20 @@
+---
+
+- name: Crear directorio backup
+  become: true
+  file:
+          path: /backup
+          state: directory
+
+- name: Copiar el archivo de backup al servidor de base de datos - CentOS
+  copy:
+    src: "{{ backup_file_centos }}"
+    dest: "/backup/restore.sql"
+
+- name: Restaurar base de datos
+  mysql_db:
+      login_user: wordpress-user
+      login_password: 1234
+      name: bdwordpress
+      state: import
+      target: /backup/restore.sql
