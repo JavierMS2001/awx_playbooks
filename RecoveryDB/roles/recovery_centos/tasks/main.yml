@@ -13,6 +13,11 @@
     file_type: file
   register: found_files
 
+- name: Mostrar elementos de la lista
+  debug:
+    msg: "{{ item }}"
+  loop: "{{ found_files }}"
+
 - name: Ordenar archivos por fecha de modificación
   set_fact:
     sort_files: "{{ found_files.files | sort(attribute='mtime') }}"
