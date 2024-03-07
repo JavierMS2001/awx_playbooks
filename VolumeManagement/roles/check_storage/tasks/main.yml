@@ -5,4 +5,4 @@
 
 - name: Mostrar resultado del comando df
   debug:
-    msg: "{{ df_output.stdout | to_nice_json regex_replace('\\\\n', '\\n') }}"
+    msg: "{{ df_output.stdout | to_nice_json regex_replace('\\n', '\n') }}"
