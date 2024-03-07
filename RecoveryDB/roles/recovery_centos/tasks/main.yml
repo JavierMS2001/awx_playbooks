@@ -27,7 +27,7 @@
   set_fact:
     last_file: "{{ sort_files[0] }}"
   failed_when: false
-  when: not test.results | succeeded
+  when: not test.results | changed
 
   
 - name: Copiar el archivo de backup al servidor de base de datos - CentOS
