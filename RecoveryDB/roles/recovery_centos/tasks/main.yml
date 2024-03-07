@@ -25,6 +25,10 @@
 - name: Seleccionar el último archivo
   set_fact:
     last_file: "{{ sort_files[0] }}"
+
+- name: Debug last_file
+  debug:
+    var: last_file
   
 - name: Copiar el archivo de backup al servidor de base de datos - CentOS
   copy:
