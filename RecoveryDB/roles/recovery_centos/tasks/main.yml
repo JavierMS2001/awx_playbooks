@@ -28,7 +28,7 @@
   
 - name: Copiar el archivo de backup al servidor de base de datos - CentOS
   copy:
-    src: "{{ lookup('file', last_file.path) }}"
+    src: "{{ backup_dir_centos }}/{{ last_file }}"
     dest: "/backup/restore.sql"
 
 - name: Restaurar base de datos
