@@ -1,17 +1,8 @@
 ---
-
-- name: Execute df command
-  shell: df -h
+- name: Ejecutar el comando df
+  command: df -h
   register: df_output
 
-- name: Formatear la salida de df
-  shell: |
-    echo "{{ df_output.stdout }}" | awk 'NR>1 {printf "%-30s %7s %7s %7s %3s %s\n", $1, $2, $3, $4, $5, $6}'
-  register: formatted_df_output
-
-- name: Mostrar la salida formateada
+- name: Mostrar resultado del comando df
   debug:
-    msg: | 
-      Filesystem                 Size  Used Avail Use% Mounted on
-
-      "{{ formatted_df_output.stdout }}"
+    msg: "{{ df_output.stdout | to_nice_json }}"
