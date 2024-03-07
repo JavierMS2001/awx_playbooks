@@ -25,7 +25,7 @@
 
 - name: Seleccionar el último archivo
   set_fact:
-    last_file: "{{ sort_files[0] }}"
+    last_file: "{{ found_files.files | sort(attribute='mtime',reverse=true) | first }}"
   delegate_to: "{{ backup_server }}"
 
 - name: Debug last_file
@@ -34,7 +34,7 @@
   
 - name: Copiar el archivo de backup al servidor de base de datos - CentOS
   copy:
-    src: "{{ backup_dir_centos }}{{ last_file.path }}"
+    src: "{{ last_file.path }}"
     dest: "/backup/restore.sql"
 
 - name: Restaurar base de datos
