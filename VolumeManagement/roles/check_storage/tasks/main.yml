@@ -6,7 +6,7 @@
 
 - name: Formatear la salida de df
   shell: |
-    echo ""
+    echo "Volume Space:"
     echo "Filesystem                 Size  Used Avail Use% Mounted on"
     echo "{{ df_output.stdout }}" | awk 'NR>1 {printf "%-30s %7s %7s %7s %3s %s\n", $1, $2, $3, $4, $5, $6}'
   register: formatted_df_output
