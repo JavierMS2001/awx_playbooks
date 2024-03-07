@@ -15,8 +15,7 @@
 
 - name: Mostrar elementos de la lista
   debug:
-    msg: "{{ item }}"
-  loop: "{{ found_files }}"
+    msg: "{{ found_files }}"
 
 - name: Ordenar archivos por fecha de modificación
   set_fact:
