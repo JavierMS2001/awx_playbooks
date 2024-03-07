@@ -5,13 +5,12 @@
   register: df_output
 
 - name: Editar la salida de df para hacerla más entendible
-  set_fact:
-    df_pretty_output: "{{ df_output.stdout_lines | map('regex_replace', '^([^ ]+ +[^ ]+ +[^ ]+ +[^ ]+ +[^ ]+ +)([^ ]+)( +[^ ]+ +[^ ]+ +[^ ]+ +[^ ]+ +[^ ]+)', '\\1\\2 GiB') | list }}"
+  shell: echo "{{ df_output.stdout }}" | awk '{$2 = $2 " GiB"; print}'
+  register: df_pretty_output
 
 - name: Mostrar la salida editada
   debug:
-    msg: "{{ item }}"
-  loop: "{{ df_pretty_output }}"
+    msg: "{{ df_pretty_output.stdout_lines }}"
 
 - name: Show disk space
   debug:
