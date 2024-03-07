@@ -12,18 +12,16 @@
     patterns: "*.sql"
     file_type: file
   register: found_files
-
-- name: Ordenar archivos por fecha de modificación
-  set_fact:
-    sort_files: "{{ found_files.files | sort(attribute='mtime') }}"
+  delegate_to: "{{ backup_server }}"
 
 - name: Seleccionar el último archivo
   set_fact:
-    last_file: "{{ sort_files[-1] }}"
-
-- name: Copiar el archivo de backup al servidor de base de datos - CentOS
+    last_file: "{{ found_files.files | sort(attribute='mtime',reverse=true) | first }}"
+  delegate_to: "{{ backup_server }}"
+  
+- name: Copiar el archivo de backup al servidor de base de datos - Debian
   copy:
-    src: "{{ last_file }}"
+    src: "{{ last_file.path }}"
     dest: "/backup/restore.sql"
 
 - name: Restaurar base de datos
