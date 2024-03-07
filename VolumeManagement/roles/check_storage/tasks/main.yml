@@ -1,7 +1,7 @@
 ---
 - name: Ejecutar el comando df
-    shell: |
-            df -h | awk 'NR==1 || !/^Filesystem/ {print}'
+  shell: |
+         df -h | awk 'NR==1 || !/^Filesystem/ {print}'
   register: df_output
 
 - name: Mostrar resultado del comando df
