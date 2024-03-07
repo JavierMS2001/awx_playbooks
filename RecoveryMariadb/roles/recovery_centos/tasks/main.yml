@@ -8,13 +8,25 @@
   register: centos_sql_files
   delegate_to: localhost
 
+- name: Debug latest_centos_sql_file
+  debug:
+    var: centos_sql_files
+
 - name: Ordenar backups CentOS
   set_fact:
           sorted_centos_sql_files: "{{ centos_sql_files.files | sort(attribute='mtime') | reverse }}"
 
+- name: Debug latest_centos_sql_file
+  debug:
+    var: sorted_centos_sql_files
+
 - name: Seleccionar ultima backup modificada CentOS
   set_fact:
           latest_centos_sql_file: "{{ sorted_centos_sql_files[0] }}"
+
+- name: Mostrar contenido del archivo latest_centos_sql_file
+  debug:
+    msg: "{{ lookup('file', latest_centos_sql_file.path) }}"
 
 - name: Crear directorio backup
   become: true
