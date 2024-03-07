@@ -4,6 +4,15 @@
   shell: df -h
   register: df_output
 
+- name: Editar la salida de df para hacerla más entendible
+  set_fact:
+    df_pretty_output: "{{ df_output.stdout_lines | map('regex_replace', '^([^ ]+ +[^ ]+ +[^ ]+ +[^ ]+ +[^ ]+ +)([^ ]+)( +[^ ]+ +[^ ]+ +[^ ]+ +[^ ]+ +[^ ]+)', '\\1\\2 GiB') | list }}"
+
+- name: Mostrar la salida editada
+  debug:
+    msg: "{{ item }}"
+  loop: "{{ df_pretty_output }}"
+
 - name: Show disk space
   debug:
     msg: "{{ item }}"
