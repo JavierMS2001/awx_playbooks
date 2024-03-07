@@ -14,23 +14,10 @@
   register: found_files
   delegate_to: "{{ backup_server }}"
 
-- name: Mostrar elementos de la lista
-  debug:
-    msg: "{{ found_files }}"
-
-- name: Ordenar archivos por fecha de modificación
-  set_fact:
-    sort_files: "{{ found_files.files | sort(attribute='mtime') | reverse }}"
-  delegate_to: "{{ backup_server }}"
-
 - name: Seleccionar el último archivo
   set_fact:
     last_file: "{{ found_files.files | sort(attribute='mtime',reverse=true) | first }}"
   delegate_to: "{{ backup_server }}"
-
-- name: Debug last_file
-  debug:
-    var: last_file
   
 - name: Copiar el archivo de backup al servidor de base de datos - CentOS
   copy:
