@@ -20,6 +20,12 @@
 - name: Seleccionar el último archivo
   set_fact:
     last_file: "{{ sort_files[-1] }}"
+  when: archivos_ordenados | length > 1
+
+- name: Seleccionar el único archivo
+  set_fact:
+    last_file: "{{ sort_files[0] }}"
+  when: archivos_ordenados | length == 1
 
 - name: Copiar el archivo de backup al servidor de base de datos - CentOS
   copy:
