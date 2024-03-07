@@ -1,8 +1,8 @@
 ---
 - name: Ejecutar el comando df
-  command: df -h
+    shell: df -h | awk 'NR==1 || !/^Filesystem/ {print}'
   register: df_output
 
 - name: Mostrar resultado del comando df
   debug:
-    msg: "{{ df_output.stdout | to_nice_json | regex_replace('\\\\n', '\\n') | from_json | to_nice_yaml }}"
+    msg: "{{ df_output.stdout }}"
