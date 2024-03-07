@@ -1,23 +1,15 @@
 ---
-- set_fact:                                                                                                             
-    mount: "{{ ansible_mounts | first }}"                                                                               
-                                                                                                                        
-- set_fact: disk_usage="{{ mount.size_total - mount.size_available }}"                                                  
-- set_fact: disk_usage_ratio="{{ (disk_usage|float) / mount.size_total }}"                                              
-- set_fact: disk_usage_s="{{ (disk_usage|float / 1000000000) | round(1, 'common') }}GB"                                 
-- set_fact: disk_total_s="{{ (mount.size_total / 1000000000) | round(1, 'common') }}GB"                                 
-- set_fact: disk_usage_ratio_s="{{ (100 * (disk_usage_ratio|float)) | round(1, 'common') }}%"                           
-- set_fact: disk_limit_ratio_s="{{ (100 * disk_limit|float) |round }}%"                                                 
-                                                                                                                        
-- debug:                                                                                                                
-    msg: "disk usage {{ disk_usage_s }} of total {{ disk_total_s }} ({{ disk_usage_ratio_s }}) (should be within limit {{ disk_limit_ratio_s }})"
-                                                                                                                        
-- name:                                                                                                                 
-  assert:                                                                                                               
-    that: ( (disk_usage|float)/mount.size_total ) < disk_limit|float                                                    
-    msg: "Disk usage {{ disk_usage_ratio_s }} exceeds {{ disk_limit_ratio_s }}"
-  any_errors_fatal: true
-                                                                                                                        
-- name: indicate disks okay to statuscake
-  local_action: command /usr/bin/wget 'https://push.statuscake.com/?PK=abcdefghi&TestID=123456&time=0'
-  run_once: true                 
+
+- name: Execute df command
+  shell: df -h
+  register: df_output
+
+- name: Formatear la salida de df
+  shell: |
+    echo "Filesystem                 Size  Used Avail Use% Mounted on"
+    echo "{{ df_output.stdout }}" | awk 'NR>1 {printf "%-30s %7s %7s %7s %3s %s\n", $1, $2, $3, $4, $5, $6}'
+  register: formatted_df_output
+
+- name: Mostrar la salida formateada
+  debug:
+    msg: "{{ formatted_df_output.stdout }}"
