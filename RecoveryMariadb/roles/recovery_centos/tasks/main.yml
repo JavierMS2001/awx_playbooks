@@ -16,6 +16,10 @@
   set_fact:
           sorted_centos_sql_files: "{{ centos_sql_files.files | sort(attribute='mtime') | reverse }}"
 
+- name: Debug latest_centos_sql_file
+  debug:
+    var: sorted_centos_sql_files
+
 - name: Seleccionar ultima backup modificada CentOS
   set_fact:
           latest_centos_sql_file: "{{ sorted_centos_sql_files[0] }}"
