@@ -4,4 +4,5 @@
   hosts: all
   become: true
 
-  role: check_storage
+  roles:
+          - role: check_storage
