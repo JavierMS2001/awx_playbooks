@@ -1,0 +1,11 @@
+---
+
+- name: Execute df command
+  shell: df -h
+  register: df_output
+
+- name: Show disk space
+  debug:
+    msg: "{{ item }}"
+  loop: "{{ df_output.stdout_lines }}"
+

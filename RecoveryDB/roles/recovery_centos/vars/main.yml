@@ -1,0 +1,4 @@
+---
+
+backup_dir_centos: "/backups/CentOS-server"
+backup_server: "localhost"

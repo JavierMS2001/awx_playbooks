@@ -26,7 +26,6 @@
 - name: Importar backup al control node CentOS
   fetch: 
         src: "/backup/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
-        #        dest: "/backups/bdwordpress-CentOS/"
         dest: "{{ backups_dir }}/CentOS-server/"
         flat: yes
         when: result is success 

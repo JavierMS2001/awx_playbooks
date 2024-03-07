@@ -1,0 +1,7 @@
+---
+
+- name: Check available storage
+  hosts: all
+  become: true
+
+  roles: check_storage
