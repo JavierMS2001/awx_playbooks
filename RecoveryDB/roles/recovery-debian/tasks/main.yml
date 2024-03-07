@@ -6,9 +6,24 @@
           path: /backup
           state: directory
 
+- name: Buscar archivos en el directorio
+  find:
+    paths: "{{ backup_dir_debian }}"
+    patterns: "*.sql"
+    file_type: file
+  register: found_files
+
+- name: Ordenar archivos por fecha de modificación
+  set_fact:
+    sort_files: "{{ found_files.files | sort(attribute='mtime') }}"
+
+- name: Seleccionar el último archivo
+  set_fact:
+    last_file: "{{ sort_files[-1] }}"
+
 - name: Copiar el archivo de backup al servidor de base de datos - CentOS
   copy:
-    src: "{{ backup_file_debian }}"
+    src: "{{ last_file }}"
     dest: "/backup/restore.sql"
 
 - name: Restaurar base de datos
