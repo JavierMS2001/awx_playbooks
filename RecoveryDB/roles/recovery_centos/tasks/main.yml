@@ -17,16 +17,19 @@
   set_fact:
     sort_files: "{{ found_files.files | sort(attribute='mtime') }}"
 
-- name: Seleccionar el único archivo
-  set_fact:
-    last_file: "{{ sort_files[0] }}"
-  when: sort_files | length == 1
-
 - name: Seleccionar el último archivo
   set_fact:
     last_file: "{{ sort_files[-1] }}"
   when: sort_files | length > 1
+  register: test
 
+- name: Seleccionar el único archivo
+  set_fact:
+    last_file: "{{ sort_files[0] }}"
+  failed_when: false
+  when: not test.results | succeeded
+
+  
 - name: Copiar el archivo de backup al servidor de base de datos - CentOS
   copy:
     src: "{{ last_file }}"
