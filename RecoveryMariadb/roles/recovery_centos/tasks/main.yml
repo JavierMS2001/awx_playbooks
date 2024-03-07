@@ -8,6 +8,10 @@
   register: centos_sql_files
   delegate_to: localhost
 
+- name: Debug latest_centos_sql_file
+  debug:
+    var: centos_sql_files
+
 - name: Ordenar backups CentOS
   set_fact:
           sorted_centos_sql_files: "{{ centos_sql_files.files | sort(attribute='mtime') | reverse }}"
