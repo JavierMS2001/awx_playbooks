@@ -17,6 +17,11 @@
   set_fact:
     sort_files: "{{ found_files.files | sort(attribute='mtime') }}"
 
+- name: Mostrar elementos de la lista
+  debug:
+    msg: "{{ item }}"
+  loop: "{{ sort_files }}"
+
 - name: Seleccionar el último archivo
   set_fact:
     last_file: "{{ sort_files[-1] }}"
@@ -28,7 +33,6 @@
     last_file: "{{ sort_files[0] }}"
   failed_when: false
   when: not test.changed
-
   
 - name: Copiar el archivo de backup al servidor de base de datos - CentOS
   copy:
