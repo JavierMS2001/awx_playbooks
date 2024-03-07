@@ -1,9 +1,14 @@
 ---
-- name: Ejecutar el comando df
-  shell: |
-         df -h | awk 'NR==1 || !/^Filesystem/ {print}'
+- name: Obtener salida de df
+  shell: df -h
   register: df_output
 
-- name: Mostrar resultado del comando df
+- name: Formatear la salida de df
+  shell: |
+    echo "Filesystem                 Size  Used Avail Use% Mounted on"
+    echo "{{ df_output.stdout }}" | awk 'NR>1 {printf "%-30s %7s %7s %7s %3s %s\n", $1, $2, $3, $4, $5, $6}'
+  register: formatted_df_output
+
+- name: Mostrar la salida formateada
   debug:
-    msg: "{{ df_output.stdout }}"
+    msg: "{{ formatted_df_output.stdout }}"
