@@ -12,7 +12,7 @@
     patterns: "*.sql"
     file_type: file
   register: found_files
-  delegate_to: {{ backup_server }}
+  delegate_to: "{{ backup_server }}"
 
 - name: Mostrar elementos de la lista
   debug:
