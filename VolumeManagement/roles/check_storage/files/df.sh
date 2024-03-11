@@ -31,7 +31,9 @@ echo "$df_output" | while IFS= read -r line; do
     # Convertir el espacio disponible a gigabytes
     avail_gb=$(echo "$avail" | sed 's/G//')
     avail_mb=$(echo "$avail" | sed 's/M//')
-    if [[ "$avail" == *G ]]; then
+    if [[ $avail_gb == 0 ]]; then
+	avail_bytes=0
+    elif [[ "$avail" == *G ]]; then
         avail_bytes=$((avail_gb * 1024 * 1024 * 1024))
     elif [[ "$avail" == *M ]]; then
         avail_bytes=$((avail_mb * 1024 * 1024))
