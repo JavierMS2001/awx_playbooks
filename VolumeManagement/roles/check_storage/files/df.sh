@@ -4,7 +4,7 @@
 threshold_gb=$1
 
 # Convertir el umbral de GB a bytes
-threshold_bytes=$(awk "BEGIN { print $threshold_gb * 1024 * 1024 * 1024 }")
+threshold_bytes=$1
 
 # Ejecutar el comando df -h y almacenar la salida en una variable
 df_output=$(df -h)
