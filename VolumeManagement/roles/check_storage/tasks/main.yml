@@ -1,6 +1,6 @@
 ---
 - name: Ejecutar df.sh
-  script: files/df.sh
+  script: files/df.sh "{{ min_gb }}"
   register: out
 
 - debug: var=out.stdout_lines
