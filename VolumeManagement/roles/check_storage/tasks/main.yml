@@ -12,3 +12,9 @@
 - name: Mostrar la salida formateada
   debug:
     msg: "{{ formatted_df_output.stdout }}"
+
+- name: Ejecutar df.sh
+  script: files/df.sh
+  register: out
+
+- debug: var=out.stdout_lines
