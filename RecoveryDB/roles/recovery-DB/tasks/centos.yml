@@ -1,33 +1,33 @@
 ---
 
-- name: Crear directorio backup
+- name: Create /backup directory
   become: true
   file:
           path: /backup
           state: directory
 
-- name: Buscar archivos en el directorio
+- name: Search backups files in /backup
   find:
-    paths: "{{ backup_dir_debian }}"
+    paths: "{{ backup_dir_centos }}"
     patterns: "*.sql"
     file_type: file
   register: found_files
   delegate_to: "{{ backup_server }}"
 
-- name: Seleccionar el último archivo
+- name: Select last backup file
   set_fact:
     last_file: "{{ found_files.files | sort(attribute='mtime',reverse=true) | first }}"
   delegate_to: "{{ backup_server }}"
   
-- name: Copiar el archivo de backup al servidor de base de datos - Debian
+- name: Copy backup file to database server - CentOS
   copy:
     src: "{{ last_file.path }}"
     dest: "/backup/restore.sql"
 
-- name: Restaurar base de datos
+- name: Rescovery backup
   mysql_db:
-      login_user: wordpress-user
-      login_password: 1234
-      name: bdwordpress
+      login_user: "{{ db_username }}"
+      login_password: "{{ db_password }}"
+      name: "{{ db_name }}"
       state: import
       target: /backup/restore.sql
