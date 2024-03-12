@@ -4,8 +4,4 @@
   become: true
 
   roles:
-    - role: apache_centos
-      when: ansible_distribution == 'CentOS'
-
-    - role: apache_debian
-      when: ansible_distribution == 'Debian'
+    - role: install-apache

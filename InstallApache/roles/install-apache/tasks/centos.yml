@@ -1,0 +1,45 @@
+---
+
+- name: Install http
+  yum:
+          name: httpd
+          state: latest
+  retries: 3
+  delay: 10
+
+- name: Start Apache
+  service:
+          name: httpd
+          state: started
+          enabled: yes
+
+- name: Open ports to HTTPD service
+  firewalld:
+          service: http
+          permanent: true
+          state: enabled
+
+- name: Reload Firewall
+  service:
+          name: firewalld
+          state: reloaded
+
+- name: Deshabilitar SeLinux
+  template:
+          src: files/config
+          dest: /etc/selinux/config
+          owner: root
+          group: root
+          mode: '0644'
+
+ - name: Reboot server
+   reboot:
+           reboot_timeout: 30
+           post_reboot_delay: 30
+
+ - name: Start Apache
+   service:
+           name: httpd
+           state: started
+           enabled: yes
+
