@@ -1,6 +1,6 @@
 ---
 
-- name: Instalar MariaDB y módulos necesarios - Debian
+- name: Install MariaDB and others necessary modules
   apt:
           name:
                   - mariadb-server
@@ -9,23 +9,23 @@
                   - ufw
           state: present
 
-- name: Habilitar UFW
+- name: Enable UWF
   ufw:
           state: enabled
 
-- name: Iniciar MariaDB
+- name: Start mariadb
   service:
           name: mariadb
           enabled: true
           state: restarted
 
-- name: Ejecutar mysql_secure_installation y establecer una contraseña.
+- name: Use mysql_secure_installation to set password
   shell: |
-          echo -e "\nn\nY\nvagrant\nvagrant\nY\nn\nY\nY\n" | sudo mysql_secure_installation
+          echo -e "\nn\nY\n{{ db_root_pass }}\n{{ db_root_pass }}\nY\nn\nY\nY\n" | sudo mysql_secure_installation
   args:
    executable: /bin/bash
 
-- name: Establecer configuración Mariadb - Debian
+- name: Set mariadb Config
   template:
           src: files/50-server.cnf
           dest: /etc/mysql/mariadb.conf.d/50-server.cnf
@@ -33,38 +33,44 @@
           group: root
           mode: '0755'
 
-- name: Reiniciar MariaDB
+- name: Restart mariadb
   service:
           name: mariadb
           enabled: true
           state: restarted
 
-- name: Crear base de datos para Wordpress
+- name: Create database
   mysql_db:
-          name: bdwordpress
-          login_user: root
-          login_password: vagrant
+          name: "{{ database_name }}"
+          login_user: "{{ db_root_user }}"
+          login_password: "{{ db_root_pass }}"
           login_host: localhost
           state: present
 
-- name: Crear usuario para la base de datos
+- name: Create user to database
   mysql_user:
-          name: wordpress-user
-          password: 1234
+          name: "{{ db_username }}"
+          password: "{{ db_user_pass }}"
           priv: 'bdwordpress.*:ALL,GRANT'
           host: '%'
-          login_user: root
-          login_password: vagrant
+          login_user: "{{ db_root_user }}"
+          login_password: "{{ db_root_pass }}"
           login_host: localhost
           state: present
 
-- name: Habilitar puerto 3306 ufw Debian
+- name: Enable port 3306 - UFW
   ufw:
           rule: allow
           port: "3306"
+  register: port_3306
 
-- name: Habilitar puerto 22 ufw Debian
+- name: Enable port 22 - UFW
   ufw:
           rule: allow
           port: "22"
-  notify: "reload ufw"
+  register: port_22
+
+- name: Reload firewall configuration
+  ufw:
+          state: reloaded
+  when: port_3306.changed and port_22.changed

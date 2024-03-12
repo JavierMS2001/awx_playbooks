@@ -4,8 +4,4 @@
   become: true
 
   roles:
-    - role: mariadb_centos
-      when: ansible_distribution == 'CentOS'
-
-    - role: mariadb_debian
-      when: ansible_distribution == 'Debian'
+    - role: install-mariadb
