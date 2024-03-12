@@ -1,4 +1,5 @@
 ---
 
 backup_dir_centos: "/backups/CentOS-server"
+backup_dir_debian: "/backups/Debian-server"
 backup_server: "localhost"
