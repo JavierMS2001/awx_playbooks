@@ -32,14 +32,13 @@
           group: root
           mode: '0644'
 
- - name: Reboot server
-   reboot:
-           reboot_timeout: 30
-           post_reboot_delay: 30
+- name: Reboot server
+  reboot:
+          reboot_timeout: 30
+          post_reboot_delay: 30
 
- - name: Start Apache
-   service:
-           name: httpd
-           state: started
-           enabled: yes
-
+- name: Start Apache
+  service:
+          name: httpd
+          state: started
+          enabled: yes
