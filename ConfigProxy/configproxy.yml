@@ -4,8 +4,4 @@
   become: true
 
   roles:
-    - role: proxy_centos
-      when: ansible_distribution == 'CentOS'
-
-    - role: proxy_debian
-      when: ansible_distribution == 'Debian'
+    - role: config-proxy

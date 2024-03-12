@@ -1,0 +1,16 @@
+---
+
+- name: Set Proxy Config
+  template:
+          src: files/centos/proxy.conf
+          dest: /etc/httpd/conf.d/proxy.conf
+          owner: root
+          group: root
+          mode: '0644'
+  register: restart
+
+- name: Restart httpd service
+  service:
+          name: httpd
+          state: restarted
+  when: restart.changed
