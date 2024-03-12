@@ -4,8 +4,4 @@
   become: true
 
   roles:
-          - role: wordpress_centos
-            when: ansible_distribution == 'CentOS'
-
-          - role: wordpress_debian
-            when: ansible_distribution == 'Debian'
+          - role: install-wordpress

@@ -1,6 +1,6 @@
 ---
 
-- name: Instalar paquetes requeridos
+- name: Install required packages
   yum:
           name: "{{ item  }}"
           state: latest
@@ -10,9 +10,15 @@
         - php-xml
         - php-mbstring
         - php-mysqli
-  notify: "restart httpd"
+  register: "packets"
 
-- name: Descargar y descomprimir WordPress para CentOS
+- name: Restart http
+  service:
+          name: httpd
+          state: restarted
+  when: "packets.changed"
+
+- name: Download Wordpress
   unarchive:
           src: https://wordpress.org/latest.tar.gz
           dest: /var/www/html/
@@ -21,21 +27,31 @@
           group: apache
           mode: '0755'
 
-- name: Establecer configuración WordPress CentOS
+- name: Enable WordPress Configuration
   template:
-          src: files/wp-config.php
+          src: files/centos/wp-config.php
           dest: /var/www/html/wordpress/wp-config.php
           owner: apache
           group: apache
           mode: '0644'
 
-- name: Deshabilitar SeLinux
+- name: Disabled SeLinux
   template:
-          src: files/config
+          src: files/centos/config
           dest: /etc/selinux/config
           owner: root
           group: root
           mode: '0644'
-  notify:
-          - "restart server"
-          - "start httpd"
+  register: "reboot"  
+
+- name: Reboot server
+  reboot:
+          reboot_timeout: 30
+          post_reboot_delay: 30
+  when: "reboot.changed"
+
+- name: Start http Service
+  service:
+          name: httpd
+          state: started
+  when: "reboot.changed"
