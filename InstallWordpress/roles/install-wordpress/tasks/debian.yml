@@ -20,7 +20,7 @@
         
 - name: Download Wordpress files
   get_url:
-          url: "https://es.wordpress.org/wordpress-6.4.3-es_ES.tar.gz"
+          url: "https://wordpress.org/latest.tar.gz"
           dest: "/tmp/wordpress.tar.gz"
 
 - name: Extract Wordpress files

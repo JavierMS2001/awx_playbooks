@@ -20,7 +20,7 @@
 
 - name: Download Wordpress
   unarchive:
-          src: https://es.wordpress.org/wordpress-6.4.3-es_ES.tar.gz
+          src: https://wordpress.org/latest.tar.gz
           dest: /var/www/html/
           remote_src: yes
           owner: apache
