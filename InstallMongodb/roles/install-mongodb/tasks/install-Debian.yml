@@ -1,5 +1,11 @@
 ---
 
+- name: Install MongoDB collection
+  community.general.collection:
+          name: community.mongodb
+          state: present
+  delegate_to: localhost
+
 - name: Install required packages
   apt:
           name:
