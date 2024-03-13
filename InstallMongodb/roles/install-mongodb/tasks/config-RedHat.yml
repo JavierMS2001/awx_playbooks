@@ -18,10 +18,9 @@
 
 - name: Create admin user
   mongodb_user:
-          login_port: "27017"
-          database: "admin"
-          name: "{{ admin_user }}"
-          password: "{{ admin_pass }}"
-          roles: "root"
+          database: admin
+          name: root
+          password: vagrant
+          roles: userAdminAnyDatabase
 
           #- name: Create remote datab
