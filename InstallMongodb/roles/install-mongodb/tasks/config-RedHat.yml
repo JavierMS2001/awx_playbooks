@@ -17,7 +17,7 @@
 
 
 - name: Create admin user
-  mongodb_user:
+  community.mongodb.mongodb_user:
           login_port: "27017"
           database: "admin"
           name: "{{ admin_user }}"
