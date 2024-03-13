@@ -1,12 +1,5 @@
 ---
 
-- name: Install MongoDB collection
-  community.general.ansible_galaxy_install:
-          type: collection
-          name: community.mongodb
-          state: present
-  delegate_to: "localhost"
-
 - name: Install required packages
   apt:
           name:
@@ -31,9 +24,6 @@
     path: "/etc/apt/sources.list.d/mongodb-org-{{ mongo_version }}.list"
     line: "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/{{ mongo_version }} main"
     create: yes
-  retries: 3
-  delay: 10
-
 
 - name: Update repositories
   become: yes

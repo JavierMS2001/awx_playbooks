@@ -19,10 +19,11 @@
 
 
 - name: Create admin user
-  mongodb_user:
-          database: admin
-          name: root
+  community.mongodb.mongodb_user:
+          login_database: admin
+          username: administrator
           password: vagrant
-          roles: userAdminAnyDatabase
+          state: present
+          roles: ["root"]
 
           #- name: Create remote datab
