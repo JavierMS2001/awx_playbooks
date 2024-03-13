@@ -1,0 +1,28 @@
+---
+
+- name: add repo gpg key
+  rpm_key:
+    key: https://www.mongodb.org/static/pgp/server-{{ mongo_version }}.asc
+
+- name: add repo
+    yum_repository:
+            name: "mongodb-org-{{ mongo_version }}"
+            description: 'MongoDB Repository'
+            file: mongodb
+            baseurl: "https://repo.mongodb.org/yum/redhat/{{ server_version }}/mongodb-org/{{ mongo_version }}/x86_64/"
+            enabled: true
+            gpgcheck: true
+            gpgkey: "https://www.mongodb.org/static/pgp/server-{{ mongo_version }}.asc"
+
+- name: Install MongoDB
+  become: yes
+  yum:
+    name: mongodb-org
+    state: present
+
+- name: Start MongoDB Service
+  become: yes
+  service:
+          name: mongod
+          state: started
+          enabled: yes
