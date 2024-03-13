@@ -1,23 +1,5 @@
 ---
 
-
-
-#- name: Set MongoDB config
-#  template:
-#          src: files/RedHat/mongod.conf
-#          dest: /etc/mongod.conf
-#          owner: root
-#          group: root
-#          mode: '0644'
-#  register: restart
-
-#- name: Restart MongoDB service
-#  service:
-#          name: mongod
-#          state: restarted
-#  when: restart.changed
-
-
 - name: Create admin user
   community.mongodb.mongodb_user:
           database: admin
@@ -26,4 +8,39 @@
           state: present
           roles: ["root"]
 
-          #- name: Create remote datab
+- name: Set MongoDB config
+  template:
+          src: files/RedHat/mongod.conf
+          dest: /etc/mongod.conf
+          owner: root
+          group: root
+          mode: '0644'
+  register: restart
+
+- name: Restart MongoDB service
+  service:
+          name: mongod
+          state: restarted
+  when: restart.changed
+
+- name: Open port 27017
+  firewalld:
+          port: 27017/tcp
+          permanent: true
+          state: enabled
+  register: firewall
+
+- name: Restart firewall
+  systemd:
+          name: firewalld
+          state: restarted
+  when: firewall.changed
+
+- name: Create Collection and Database
+  community.mongodb.mongodb_collection:
+         login_database: admin
+         login_password: vagrant
+         database_name: Test_Database
+         collection_name: Test_Collection
+         state: present
+
