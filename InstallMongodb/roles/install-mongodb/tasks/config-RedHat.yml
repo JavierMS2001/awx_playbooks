@@ -16,11 +16,12 @@
 #  when: restart.changed
 
 
-- name: Create 'admin' user
+- name: Create admin user
   mongodb_user:
+          login_port: "27017"
           database: "admin"
           name: "{{ admin_user }}"
           password: "{{ admin_pass }}"
-          state: present
+          roles: "root"
 
           #- name: Create remote datab
