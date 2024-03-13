@@ -19,14 +19,23 @@
   retries: 3
   delay: 10
 
-- name: Install MongoDB
+- name: Install MongoDB and pip
   become: yes
   yum:
-    name: mongodb-org
+    name: 
+        - mongodb-org
+        - pip
     state: present
   retries: 3
   delay: 10
 
+- name: Install PyMongo
+  become: yes
+  pip:
+          name: pymongo
+          state: present
+  retries: 3
+  delay: 10
 
 - name: Start MongoDB Service
   become: yes
