@@ -9,11 +9,11 @@
 #          mode: '0644'
 #  register: restart
 
-- name: Restart MongoDB service
-  service:
-          name: mongod
-          state: restarted
-  when: restart.changed
+#- name: Restart MongoDB service
+#  service:
+#          name: mongod
+#          state: restarted
+#  when: restart.changed
 
 
 - name: Create 'admin' user
