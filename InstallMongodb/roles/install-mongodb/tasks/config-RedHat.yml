@@ -1,1 +1,26 @@
 ---
+
+#- name: Set MongoDB config
+#  template:
+#          src: files/RedHat/mongod.conf
+#          dest: /etc/mongod.conf
+#          owner: root
+#          group: root
+#          mode: '0644'
+#  register: restart
+
+- name: Restart MongoDB service
+  service:
+          name: mongod
+          state: restarted
+  when: restart.changed
+
+
+- name: Create 'admin' user
+  community.mongodb.mongodb_user:
+          database: "admin"
+          name: "{{ admin_user }}"
+          password: "{{ admin_pass }}"
+          state: present
+
+          #- name: Create remote datab
