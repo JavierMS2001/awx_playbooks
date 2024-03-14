@@ -42,6 +42,7 @@
           database: "Remotedb"
           name: "{{ remote_user }}"
           password: "{{ remote_password }}"
+          state: present
           roles:
                   - { db: "admin", role: "readWrite" }
                   - { db: "Remotedb", role: "readWrite" }
