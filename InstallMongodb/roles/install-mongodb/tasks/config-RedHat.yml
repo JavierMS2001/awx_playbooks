@@ -3,8 +3,8 @@
 - name: Create admin user
   community.mongodb.mongodb_user:
           database: admin
-          name: admin
-          password: vagrant
+          name: "{{ admin_user }}"
+          password: "{{ admin_password }}"
           state: present
           roles: ["root"]
 
@@ -36,11 +36,21 @@
           state: restarted
   when: firewall.changed
 
-- name: Create Collection and Database
-  community.mongodb.mongodb_collection:
-         login_database: admin
-         login_password: vagrant
-         database_name: Test_Database
-         collection_name: Test_Collection
-         state: present
+- name: Create RemoteDataBase
+  community.mongodb.mongodb_shell:
+          login_user: "{{ admin_user }}"
+          login_password: "{{ admin_password }}"
+          db: "Remotedb"
+          eval: "db.createCollection('TestingRemotingDB')"
 
+- name: Create Remote User
+  community.mongodb.mongodb_user:
+          login_user: "{{ admin_user }}"
+          login_password: "{{ admin_password }}"
+          login_port: "27017"
+          database: "Remotedb"
+          name: "{{ remote_user }}"
+          password: "{{ remote_password }}"
+          roles:
+                  - { db: "admin", role: "readWrite" }
+                  - { db: "Remotedb", role: "readWrite" }
