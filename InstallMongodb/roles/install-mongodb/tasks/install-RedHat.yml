@@ -29,6 +29,7 @@
     state: present
   retries: 3
   delay: 10
+  register: installed
 
 - name: Install PyMongo
   become: yes
@@ -44,3 +45,12 @@
           name: mongod
           state: started
           enabled: yes
+
+- name: Create admin user
+  community.mongodb.mongodb_user:
+          database: admin
+          name: "{{ admin_user }}"
+          password: "{{ admin_password }}"
+          state: present
+          roles: ["root"]
+  when: installed.changed
