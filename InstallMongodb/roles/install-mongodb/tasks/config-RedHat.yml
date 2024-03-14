@@ -32,7 +32,6 @@
   community.mongodb.mongodb_shell:
           login_user: "{{ admin_user }}"
           login_password: "{{ admin_password }}"
-          login_host: 192.168.10.62
           db: "Remotedb"
           eval: "db.createCollection('TestingRemotingDB')"
 
