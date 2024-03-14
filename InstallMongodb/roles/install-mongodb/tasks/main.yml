@@ -1,9 +1,5 @@
 ---
 
-- name: Install ansible collection community.mongodb
-  shell: ansible-galaxy collection install community.mongodb
-  delegate_to: "{{ control_node }}"
-
 - name: Include OS-specific variables.
   include_vars: "{{ ansible_os_family }}.yml"
 
