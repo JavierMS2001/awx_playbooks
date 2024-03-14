@@ -1,5 +1,6 @@
 ---
 
+control_node: "localhost"
 mongo_version: "7.0"
 
 admin_user: "admin"
