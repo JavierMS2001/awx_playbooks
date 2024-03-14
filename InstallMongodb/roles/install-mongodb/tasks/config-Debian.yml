@@ -1,1 +1,46 @@
 ---
+
+- name: Set MongoDB config
+  template:
+          src: files/Debian/mongod.conf
+          dest: /etc/mongod.conf
+          owner: root
+          group: root
+          mode: '0644'
+  register: restart
+
+- name: Restart MongoDB service
+  service:
+          name: mongod
+          state: restarted
+  when: restart.changed
+
+- name: Open port 27017
+  ufw:
+          rule: allow
+          port: "27017"
+  register: firewall
+
+- name: Restart firewall
+  ufw:
+          state: reloaded
+  when: firewall.changed
+
+- name: Create RemoteDataBase
+  community.mongodb.mongodb_shell:
+          login_user: "{{ admin_user }}"
+          login_password: "{{ admin_password }}"
+          db: "Remotedb"
+          eval: "db.createCollection('TestingRemotingDB')"
+
+- name: Create Remote User
+  community.mongodb.mongodb_user:
+          login_user: "{{ admin_user }}"
+          login_password: "{{ admin_password }}"
+          database: "Remotedb"
+          name: "{{ remote_user }}"
+          password: "{{ remote_password }}"
+          state: present
+          roles:
+                  - { db: "admin", role: "readWrite" }
+                  - { db: "Remotedb", role: "readWrite" }
