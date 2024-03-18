@@ -1,0 +1,31 @@
+---
+- name: Create backup dir
+  file:
+          path: /backups
+          state: directory
+          mode: '0755'
+
+- name: Get actual time and date
+  set_fact:
+          timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.time }}"
+
+- name: Dump the database
+  command: >
+          sudo mongodump
+          -u "{{ backup_user }}" 
+          -p "{{ user_password }}" 
+          --authenticationDatabase "{{ auth_database }}"
+          --db "{{ database_name }}" 
+          --out "/backups/{{ database_name }}_backup-{{ timestamp }}"
+
+- name: Check backup
+  stat:
+          path: "/backups/"
+
+
+- name: Import backup to control node
+  fetch:
+          src: "/backups/{{ database_name }}_backup-{{ timestamp }}"
+          dest: "{{ backups_dir }}/{{ ansible_distribution }}/"
+          flat: yes
+          when: result is success

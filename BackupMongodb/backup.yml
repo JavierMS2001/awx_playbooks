@@ -1,0 +1,8 @@
+---
+
+- name: Backup DataBase
+  hosts: mongodb
+  become: true
+
+  roles:
+          - role: backup-mongo
