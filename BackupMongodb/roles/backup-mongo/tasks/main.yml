@@ -29,5 +29,4 @@
           dest: "{{ backups_dir }}/{{ ansible_distribution }}/"
           delete: no
           recursive: yes
-  when: result is success
   become: yes
