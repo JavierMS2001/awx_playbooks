@@ -5,3 +5,4 @@
           sudo date -s '{{ user_data }}'
   args:
    executable: /bin/bash
+  when: ansible_distribution == 'Debian'
