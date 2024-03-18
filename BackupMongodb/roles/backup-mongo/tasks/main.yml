@@ -24,8 +24,10 @@
 
 
 - name: Import backup to control node
-  fetch:
-          src: "/backups/{{ database_name }}_backup-{{ timestamp }}"
+  synchronize:
+          src: "/backups/{{ database_name }}_backup-{{ timestamp }}/"
           dest: "{{ backups_dir }}/{{ ansible_distribution }}/"
-          flat: yes
+          delete: no
+          recursive: yes
           when: result is success
+  become: yes
