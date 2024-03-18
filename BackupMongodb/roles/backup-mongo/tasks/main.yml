@@ -11,12 +11,7 @@
 
 - name: Dump the database
   command: >
-          sudo mongodump
-          -u "{{ backup_user }}" 
-          -p "{{ user_password }}" 
-          --authenticationDatabase "{{ auth_database }}"
-          --db "{{ database_name }}" 
-          --archive=/backups/MongoDB/test.tar.gz
+          sudo mongodump -u "{{ backup_user }}" -p "{{ user_password }}" --authenticationDatabase "{{ auth_database }}" --db "{{ database_name }}" --archive=/backups/MongoDB/test.tar.gz
 
 - name: Check backup
   stat:
