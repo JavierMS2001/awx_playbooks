@@ -1,0 +1,7 @@
+---
+
+- name: Set Date
+  shell: |
+          sudo date -s '{{ user_data }}'
+  args:
+   executable: /bin/bash

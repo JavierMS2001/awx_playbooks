@@ -1,0 +1,8 @@
+---
+
+- name: Set date time
+  hosts: debian
+  become: true
+
+  roles:
+          - role: set-time
