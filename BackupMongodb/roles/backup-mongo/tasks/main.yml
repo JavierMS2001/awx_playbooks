@@ -16,16 +16,15 @@
           -p "{{ user_password }}" 
           --authenticationDatabase "{{ auth_database }}"
           --db "{{ database_name }}" 
-          --out "/backups/{{ database_name }}_backup-{{ timestamp }}"
+          --archive= "/backups/MongoDB/{{ database_name }}_backup-{{ timestamp }}.tar.gz"
 
 - name: Check backup
   stat:
-          path: "/backups/"
-
+          path: "/backups/MongoDB/{{ database_name }}_backup-{{ timestamp }}.tar.gz"
 
 - name: Import backup to control node
   synchronize:
-          src: "/backups/{{ database_name }}_backup-{{ timestamp }}/"
+          src: "/backups/{{ database_name }}_backup-{{ timestamp }}.tar.gz"
           dest: "{{ backups_dir }}/{{ ansible_distribution }}/"
           delete: no
           recursive: yes
