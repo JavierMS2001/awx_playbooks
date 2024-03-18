@@ -4,6 +4,6 @@ database_name: "TestDatabase"
 backups_dir: "/backups/MongoDB" # Dir to save files in backup server
 
 backup_user: "admin"
-backup_password: "vagrant"
+user_password: "vagrant"
 audh_database: "admin"
 
