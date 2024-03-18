@@ -7,7 +7,7 @@
 
 - name: Get actual time and date
   set_fact:
-          timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.time }}"
+          timestamp: "{{ ansible_date_time.date }}"
 
 - name: Dump the database
   command: >
