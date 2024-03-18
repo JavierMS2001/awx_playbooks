@@ -17,6 +17,7 @@
           url: "https://www.mongodb.org/static/pgp/server-{{ mongo_version }}.asc"
   retries: 3
   delay: 10
+  ignore_errors: true
 
 
 - name: Add MongoDB repository to sources.list.d
