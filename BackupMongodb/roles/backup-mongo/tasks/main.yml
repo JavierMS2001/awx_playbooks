@@ -1,7 +1,7 @@
 ---
 - name: Create backup dir
   file:
-          path: /backups
+          path: /backup/MongoDB/
           state: directory
           mode: '0755'
 
