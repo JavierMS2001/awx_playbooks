@@ -16,7 +16,7 @@
           -p "{{ user_password }}" 
           --authenticationDatabase "{{ auth_database }}"
           --db "{{ database_name }}" 
-          --archive="{{ backup_path }}.tar.gz"
+          --archive="{{ backup_path }}.archive"
           --gzip
 
 - name: Check backup
