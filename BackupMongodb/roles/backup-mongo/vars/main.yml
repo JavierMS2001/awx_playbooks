@@ -7,4 +7,4 @@ backup_user: "admin"
 user_password: "vagrant"
 auth_database: "admin"
 
-backup_path: "/backup/MongoDB/{{ database_name }}_backup-{{ timestamp }}.tar.gz"
+backup_path: "/backup/MongoDB/{{ database_name }}_backup-{{ timestamp }}"

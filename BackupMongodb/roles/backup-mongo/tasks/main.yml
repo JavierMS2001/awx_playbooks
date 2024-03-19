@@ -9,23 +9,23 @@
   set_fact:
           timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}-{{ ansible_date_time.minute }}"
 
-- name: Dump the database
+- name: Dump database
   command: >
           sudo mongodump 
           -u "{{ backup_user }}"
           -p "{{ user_password }}" 
           --authenticationDatabase "{{ auth_database }}"
           --db "{{ database_name }}" 
-          --archive "{{ backup_path }}"
+          --archive="{{ backup_path }}.gz --gzip"
 
 - name: Check backup
   stat:
-          path: "{{ backup_path }}"
+          path: "{{ backup_path }}.gz"
   register: result
 
 - name: Import backup to control node
   fetch:
-          src: "{{ backup_path }}"
+          src: "{{ backup_path }}.gz"
           dest: "{{ backups_dir }}/{{ ansible_distribution }}/"
           flat: yes
           when: result is success
