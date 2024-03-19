@@ -22,7 +22,7 @@
 - name: Copy backup file to database server - CentOS
   copy:
     src: "{{ last_file.path }}"
-    dest: "/backup/restore.archive"
+    dest: "/backup/restore.bson"
 
 - name: Rescovery backup
   command: >
