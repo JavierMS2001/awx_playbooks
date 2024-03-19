@@ -23,9 +23,6 @@
           path: "{{ backup_path }}"
   register: result
 
-- name: Define backup path
-
-
 - name: Import backup to control node
   fetch:
           src: "{{ backup_path }}"
