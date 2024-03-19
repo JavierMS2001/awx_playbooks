@@ -16,7 +16,7 @@
           -p "{{ user_password }}" 
           --authenticationDatabase "{{ auth_database }}" 
           --db "{{ database_name }}" 
-          --archive="/backup/MongoDB/TestBackup_{{ database_name }}-{{ timestamp }}.tar.gz"
+          --archive= "{{ backup_path }}"
 
 - name: Check backup
   stat:
