@@ -16,16 +16,16 @@
           -p "{{ user_password }}" 
           --authenticationDatabase "{{ auth_database }}"
           --db "{{ database_name }}" 
-          --archive="{{ backup_path }}.gz --gzip"
+          --archive="{{ backup_path }}.tar.gz"
 
 - name: Check backup
   stat:
-          path: "{{ backup_path }}.gz"
+          path: "{{ backup_path }}.tar.gz"
   register: result
 
 - name: Import backup to control node
   fetch:
-          src: "{{ backup_path }}.gz"
+          src: "{{ backup_path }}.tar.gz"
           dest: "{{ backups_dir }}/{{ ansible_distribution }}/"
           flat: yes
           when: result is success
