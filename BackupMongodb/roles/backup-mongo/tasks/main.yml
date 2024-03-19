@@ -7,7 +7,7 @@
 
 - name: Get actual time and date
   set_fact:
-          timestamp: "{{ ansible_date_time.date }}"
+          timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}-{{ ansible_date_time.minute }}"
 
 - name: Dump the database
   command: >
@@ -25,7 +25,7 @@
 
 - name: Import backup to control node
   fetch:
-          src: "/backups/MongoDB/{{ database_name }}_backup-{{ timestamp }}.tar.gz"
+          src: "/backup/MongoDB/{{ database_name }}_backup-{{ timestamp }}.tar.gz"
           dest: "{{ backups_dir }}/{{ ansible_distribution }}/"
           flat: yes
           when: result is success

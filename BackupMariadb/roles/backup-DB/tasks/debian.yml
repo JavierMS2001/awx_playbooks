@@ -2,7 +2,7 @@
 
 - name: Crear directorio de copias de seguridad
   file:
-          path: /backup
+          path: /backup/MariaDB
           state: directory
           mode: '0755'
 
@@ -14,16 +14,16 @@
   mysql_db:
           state: dump
           name: bdwordpress
-          target: "/backup/bdwordpress-Debian_backup_{{ timestamp }}.sql"
+          target: "/backup/MariaDB/bdwordpress-Debian_backup_{{ timestamp }}.sql"
 
 - name: Comprobar si se ha realizado correctamente el backup Debian
   stat:
-          path: "/backup/bdwordpress-Debian_backup_{{ timestamp }}.sql"
+          path: "/backup/MariaDB/bdwordpress-Debian_backup_{{ timestamp }}.sql"
   register: result
 
 - name: Importar backup al control node Debian
   fetch:
-        src: "/backup/bdwordpress-Debian_backup_{{ timestamp }}.sql"
-        dest: "{{ backups_dir }}/Debian-server/"
+        src: "/backup/MariaDB/bdwordpress-Debian_backup_{{ timestamp }}.sql"
+        dest: "{{ backups_dir }}/MariaDB/Debian-server/"
         flat: yes
         when: result is success

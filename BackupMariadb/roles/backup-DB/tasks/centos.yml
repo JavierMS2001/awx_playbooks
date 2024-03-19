@@ -1,7 +1,7 @@
 ---
 - name: Crear directorio de copias de seguridad
   file:
-          path: /backup
+          path: /backup/MariaDB
           state: directory
           mode: '0755'
 
@@ -16,16 +16,16 @@
           login_password: vagrant
           state: dump
           name: bdwordpress
-          target: "/backup/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
+          target: "/backup/MariaDB/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
 
 - name: Comprobar si se ha realizado correctamente el backup CentOS
   stat:
-          path: "/backup/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
+          path: "/backup/MariaDB/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
   register: result
 
 - name: Importar backup al control node CentOS
   fetch: 
-        src: "/backup/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
-        dest: "{{ backups_dir }}/CentOS-server/"
+        src: "/backup/MariaDB/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
+        dest: "{{ backups_dir }}/MariaDB/CentOS-server/"
         flat: yes
         when: result is success 
