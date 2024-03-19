@@ -16,11 +16,11 @@
           -p "{{ user_password }}" 
           --authenticationDatabase "{{ auth_database }}" 
           --db "{{ database_name }}" 
-          --archive="/backups/MongoDB/TestBackup_{{ database_name }}-{{ timestamp }}.tar.gz"
+          --archive="/backup/MongoDB/TestBackup_{{ database_name }}-{{ timestamp }}.tar.gz"
 
 - name: Check backup
   stat:
-          path: "/backups/MongoDB/{{ database_name }}_backup-{{ timestamp }}.tar.gz"
+          path: "/backup/MongoDB/{{ database_name }}_backup-{{ timestamp }}.tar.gz"
   register: result
 
 - name: Import backup to control node
