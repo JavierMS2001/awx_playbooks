@@ -11,12 +11,12 @@
 
 - name: Dump the database
   command: >
-          "sudo mongodump 
-          -u {{ backup_user }} 
-          -p {{ user_password }} 
-          --authenticationDatabase {{ auth_database }} 
-          --db {{ database_name }} 
-          --archive={{ backup_path }}"
+          sudo mongodump 
+          -u "{{ backup_user }}"
+          -p "{{ user_password }}" 
+          --authenticationDatabase "{{ auth_database }}"
+          --db "{{ database_name }}" 
+          --archive "{{ backup_path }}"
 
 - name: Check backup
   stat:
