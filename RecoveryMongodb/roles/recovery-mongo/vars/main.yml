@@ -1,0 +1,8 @@
+---
+
+backup_user: "admin"
+user_password: "vagrant"
+auth_database: "admin"
+
+backup_server: "localhost"
+backup_dir: "/backups/MongoDB/{{ ansible_distribution }}/"

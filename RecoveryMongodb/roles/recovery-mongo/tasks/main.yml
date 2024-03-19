@@ -8,8 +8,8 @@
 
 - name: Search backups files in /backup
   find:
-    paths: "{{ backup_dir_centos }}"
-    patterns: "*.archive"
+    paths: "{{ backup_dir }}"
+    patterns: "*.bson"
     file_type: file
   register: found_files
   delegate_to: "{{ backup_server }}"
