@@ -30,5 +30,4 @@
           -u "{{ backup_user }}"
           -p "{{ user_password }}"
           --authenticationDatabase "{{ auth_database }}"
-          --db "{{ database_name }}"
-          --archive=/backup/restore.archive
+          --archive=/backup/restore.bson
