@@ -1,6 +1,6 @@
 ---
 
-database_name: "TestDatabase"
+database_name: "Remotedb"
 backups_dir: "/backups/MongoDB" # Dir to save files in backup server
 
 backup_user: "admin"

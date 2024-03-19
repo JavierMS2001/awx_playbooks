@@ -21,9 +21,11 @@
 - name: Check backup
   stat:
           path: "/backups/MongoDB/{{ database_name }}_backup-{{ timestamp }}.tar.gz"
+  register: result
 
 - name: Import backup to control node
   fetch:
           src: "/backups/MongoDB/{{ database_name }}_backup-{{ timestamp }}.tar.gz"
           dest: "{{ backups_dir }}/{{ ansible_distribution }}/"
           flat: yes
+          when: result is success
