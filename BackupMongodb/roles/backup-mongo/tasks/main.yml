@@ -17,6 +17,7 @@
           --authenticationDatabase "{{ auth_database }}"
           --db "{{ database_name }}" 
           --archive="{{ backup_path }}.tar.gz"
+          --gzip
 
 - name: Check backup
   stat:
