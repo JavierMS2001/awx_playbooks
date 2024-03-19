@@ -1,0 +1,8 @@
+---
+
+- name: Recovery Backup Wordpress DataBase
+  hosts: mongodb
+  become: true
+
+  roles:
+          - role: recovery-mongo

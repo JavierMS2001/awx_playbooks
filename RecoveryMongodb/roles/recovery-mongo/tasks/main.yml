@@ -1,0 +1,34 @@
+---
+
+- name: Check /backup directory
+  become: true
+  file:
+          path: /backup
+          state: directory
+
+- name: Search backups files in /backup
+  find:
+    paths: "{{ backup_dir_centos }}"
+    patterns: "*.archive"
+    file_type: file
+  register: found_files
+  delegate_to: "{{ backup_server }}"
+
+- name: Select last backup file
+  set_fact:
+    last_file: "{{ found_files.files | sort(attribute='mtime',reverse=true) | first }}"
+  delegate_to: "{{ backup_server }}"
+  
+- name: Copy backup file to database server - CentOS
+  copy:
+    src: "{{ last_file.path }}"
+    dest: "/backup/restore.archive"
+
+- name: Rescovery backup
+  command: >
+          sudo mongorestore
+          -u "{{ backup_user }}"
+          -p "{{ user_password }}"
+          --authenticationDatabase "{{ auth_database }}"
+          --db "{{ database_name }}"
+          --archive=/backup/restore.archive

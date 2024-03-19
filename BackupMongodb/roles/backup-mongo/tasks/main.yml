@@ -16,16 +16,16 @@
           -p "{{ user_password }}" 
           --authenticationDatabase "{{ auth_database }}"
           --db "{{ database_name }}" 
-          --archive="{{ backup_path }}.archive"
+          --archive="{{ backup_path }}.bson"
 
 - name: Check backup
   stat:
-          path: "{{ backup_path }}.archive"
+          path: "{{ backup_path }}.bson"
   register: result
 
 - name: Import backup to control node
   fetch:
-          src: "{{ backup_path }}.archive"
+          src: "{{ backup_path }}.bson"
           dest: "{{ backups_dir }}/{{ ansible_distribution }}/"
           flat: yes
           when: result is success
