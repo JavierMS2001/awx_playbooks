@@ -3,8 +3,5 @@
 - name: Include OS-specific variables.
   include_vars: "{{ ansible_os_family }}.yml"
 
-- include_tasks: centos.yml
-  when: ansible_distribution == 'CentOS'
+- include_tasks: "{{ ansible_os_family }}.yml"
 
-- include_tasks: debian.yml
-  when: ansible_distribution == 'Debian'
