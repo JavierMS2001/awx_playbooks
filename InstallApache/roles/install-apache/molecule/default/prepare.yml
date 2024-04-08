@@ -1,0 +1,26 @@
+---
+
+- name: Prepare instances for testing
+  hosts: all
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  become_method: root
+  gather_facts: true
+  tasks:
+    - name: Install sudo - RedHat
+      yum:
+        name: sudo
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Install iptables - RedHat
+      yum:
+        name: iptables
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Install sudo - Debian
+      apt:
+        name: sudo
+        state: present
+      when: ansible_os_family == "Debian"

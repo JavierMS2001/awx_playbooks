@@ -1,0 +1,20 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: Ubi8
+    image: ubi8-python:v1
+    privileged: true
+    command: /usr/sbin/init
+    registry: false
+    ansible_python_interpreter: /usr/bin/python3
+    pre_build_image: true
+    published_ports:
+      - 8080:80
+
+  - name: Debian11
+    image: debian-python:11.9
+    pre_build_image: true
+    privileged: true
+    published_ports:
+      - 8000:80

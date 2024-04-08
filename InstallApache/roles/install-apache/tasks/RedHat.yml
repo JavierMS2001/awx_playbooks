@@ -13,18 +13,29 @@
           state: started
           enabled: yes
 
-- name: Open ports to HTTPD service
+- name: Open ports to HTTPD service with firewalld
   firewalld:
           service: http
           permanent: true
           state: enabled
+  register: result
+  ignore_errors: true
 
 - name: Reload Firewall
   service:
           name: firewalld
           state: reloaded
+  when: result is succeeded
 
-- name: Deshabilitar SeLinux
+- name: Open ports to HTTPD service with iptables
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 80
+    jump: ACCEPT
+  when: result is failed
+
+- name: Desactivate SeLinux
   template:
           src: files/config
           dest: /etc/selinux/config
@@ -32,6 +43,7 @@
           group: root
           mode: '0644'
   register: reboot
+  when: selinux in "Y, y, yes"
 
 - name: Reboot server
   reboot:
