@@ -1,2 +1,6 @@
 ---
+<<<<<<< HEAD
+=======
+
+>>>>>>> 60ec6c04644344755078e8f595c9b9aa6e0eedbe
 - include_tasks: "{{ ansible_os_family }}.yml"
