@@ -1,3 +1,5 @@
 ---
 collections:
         - community.mongodb
+        - name: https://github.com/JavierMS2001/ansible_modules.git
+          type: git
