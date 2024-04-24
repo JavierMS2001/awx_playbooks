@@ -4,7 +4,7 @@
   tasks:
     - name: Get Pokemon data
       pokeinfo:
-        name: {{ poke_name }}
+        name: "{{ poke_name }}"
       register: poke_data
 
     - debug:
