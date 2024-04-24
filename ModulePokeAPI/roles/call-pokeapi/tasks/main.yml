@@ -1,0 +1,9 @@
+---
+- name: Call pokeapi module
+  modules.pokeinfo:
+    name: "{{ pokemon }}"
+  register: result
+
+- name: Print module result
+  debug:
+    var: result

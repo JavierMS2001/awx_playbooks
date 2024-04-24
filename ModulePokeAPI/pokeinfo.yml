@@ -1,0 +1,7 @@
+---
+- name: Testing PokemonAPI
+  hosts: localhost
+  become: true
+
+  roles:
+    - role: call-pokeapi
