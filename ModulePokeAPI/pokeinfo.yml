@@ -1,11 +1,11 @@
 ---
-- name: Test PokeAPI module
+- name: Call to PokeAPI module
   hosts: localhost
   tasks:
-    - name: Get Pikachu data
+    - name: Get Pokemon data
       pokeinfo:
-        name: Pikachu
-      register: pikachu_data
+        name: {{ poke_name }}
+      register: poke_data
 
     - debug:
-        var: pikachu_data
+        var: poke_data
