@@ -5,12 +5,12 @@
   tasks:
     - name: Check if exist repo
       stat:
-        path: "/tmp/collections/"
+        path: "/tmp/collections/{{ collection_name }}"
       register: collection_dir
 
     - name: Remove older repo version
       file:
-        path: "/tmp/modules/"
+        path: "/tmp/collections/{{ collection_name }}"
         state: absent
       when: collection_dir is succeeded
 
@@ -20,9 +20,9 @@
         dest: /tmp/collections/
 
     - name: Build collection 
-      shell: "cd /tmp/modules/{{ collection_name }} | ansible-galaxy collection build | ansible-galaxy collection install *.tar.gz"
+      shell: "cd /tmp/collections/{{ collection_name }} | ansible-galaxy collection build | ansible-galaxy collection install *.tar.gz"
 
     - name: Remove files
       file:
-        path: "/tmp/modules/"
+        path: "/tmp/collections/{{ collection_name }}"
         state: absent
