@@ -17,7 +17,7 @@
     - name: Get Git repo
       git:
         repo: "{{ repo }}"
-        dest: /tmp/collections/
+        dest: "/tmp/collections/{{ collection_name }}"
 
     - name: Build collection 
       shell: "cd /tmp/collections/{{ collection_name }} | ansible-galaxy collection build"
