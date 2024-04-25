@@ -11,4 +11,4 @@
         msg:
           - "Name: {{ poke_data.pokemon_data.name }}"
           - "Pokedex ID: {{ poke_data.pokemon_data.id }}"
-          - "Type: {{ poke_data.pokemon_data.types }}"
+          - "Type: {% for type in pikachu_data.pokemon_data.types %}{{ type.type.name }} {% endfor %}"
