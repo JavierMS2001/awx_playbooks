@@ -20,10 +20,10 @@
         dest: "/tmp/collections/"
 
     - name: Build collection 
-      shell: "cd /tmp/collections/{{ collection_name }} | ansible-galaxy collection build"
+      shell: "cd /tmp/collections/{{ collection_name }} && ansible-galaxy collection build"
 
     - name: Install collection
-      shell: "cd /tmp/collections/{{ collection_name }} | ansible-galaxy collection install *.tar.gz"
+      shell: "cd /tmp/collections/{{ collection_name }} && ansible-galaxy collection install *.tar.gz"
 
     - name: Remove files
       file:
