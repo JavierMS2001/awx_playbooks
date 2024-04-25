@@ -12,7 +12,7 @@
       file:
         path: "/tmp/modules/"
         state: absent
-      when: collection_dir.exist
+      when: collection_dir is succeeded
 
     - name: Get Git repo
       git:
