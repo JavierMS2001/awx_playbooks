@@ -3,6 +3,17 @@
   hosts: localhost
   become: true
   tasks:
+    - name: Check if exist repo
+      stat:
+        path: "/tmp/modules/"
+      register: collection_dir
+
+    - name: Remove older repo version
+      file:
+        path: "/tmp/modules/"
+        state: absent
+      when: collection_dir.exist
+
     - name: Get Git repo
       git:
         repo: "{{ repo }}"
@@ -10,3 +21,8 @@
 
     - name: Build collection 
       shell: "cd /tmp/modules/{{ collection_name }} | ansible-galaxy collection build | ansible-galaxy collection install *.tar.gz"
+
+    - name: Remove files
+      file:
+        path: "/tmp/modules/"
+        state: absent
