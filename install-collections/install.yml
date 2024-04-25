@@ -19,13 +19,14 @@
         repo: "{{ repo }}"
         dest: "/tmp/collections/"
 
+    - name: Set Module
+      copy:
+        src: "/tmp/collections/{{ collection_name }}/plugins/modules/{{ module_name }}.py"
+        dest: "/var/lib/awx/.ansible/plugins/modules/{{ module_name }}.py"
+      when: set_module in "Y, y, yes"
+
     - name: Build collection 
       shell: "cd /tmp/collections/{{ collection_name }} && ansible-galaxy collection build"
 
     - name: Install collection
       shell: "cd /tmp/collections/{{ collection_name }} && ansible-galaxy collection install *.tar.gz"
-
-    - name: Remove files
-      file:
-        path: "/tmp/collections/"
-        state: absent
