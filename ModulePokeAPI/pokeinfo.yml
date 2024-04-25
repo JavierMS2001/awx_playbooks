@@ -8,4 +8,7 @@
       register: poke_data
 
     - debug:
-        var: poke_data
+        msg:
+          - "Name: {{ poke_data.pokemon_data.name }}"
+          - "Pokedex ID: {{ poke_data.pokemon_data.id }}"
+          - "Type: {{ poke_data.pokemon_data.types }}"
