@@ -17,7 +17,7 @@
     - name: Get Git repo
       git:
         repo: "{{ repo }}"
-        dest: "/tmp/collections/{{ collection_name }}"
+        dest: "/tmp/collections/"
 
     - name: Build collection 
       shell: "cd /tmp/collections/{{ collection_name }} | ansible-galaxy collection build"
@@ -27,5 +27,5 @@
 
     - name: Remove files
       file:
-        path: "/tmp/collections/{{ collection_name }}"
+        path: "/tmp/collections/"
         state: absent
