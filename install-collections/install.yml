@@ -5,12 +5,12 @@
   tasks:
     - name: Check if exist repo
       stat:
-        path: "/tmp/collections/{{ collection_name }}"
+        path: "/tmp/collections/"
       register: collection_dir
 
     - name: Remove older repo version
       file:
-        path: "/tmp/collections/{{ collection_name }}"
+        path: "/tmp/collections/"
         state: absent
       when: collection_dir is succeeded
 
