@@ -1,6 +1,5 @@
 ---
 collections:
-  - community.mongodb
   - name: modules.pokeinfo
     source: https://github.com/JavierMS2001/modules.git
     type: git
