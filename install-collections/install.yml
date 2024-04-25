@@ -1,0 +1,12 @@
+---
+- name: Build Collection from Git repo
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Get Git repo
+      git:
+        repo: "{{ repo }}"
+        dest: /tmp
+
+    - name: Build collection 
+      shell: "cd /tmp/modules/{{ collection_name }} | ansible-galaxy collection build | ansible-galaxy collection install *.tar.gz"
