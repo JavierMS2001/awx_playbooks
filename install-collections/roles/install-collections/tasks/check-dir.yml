@@ -2,4 +2,30 @@
 
 - name: Check if exist repo
   stat:
-    path: "/tmp/collections/"
+    path: "/tmp/collections/{{ collection_name }}/"
+  register: collection_dir
+
+- name: Check if exist plugins/ dir
+  stat:
+    path: "/var/lib/awx/.ansible/plugins/"
+  register: plugins_dir
+  when: set_module in "Y, y, yes"
+
+- name: Check if exist modules/ dir
+  stat:
+    path: "/var/lib/awx/.ansible/plugins/modules/"
+  register: modules_dir
+  when: plugins_dir.stat.islnk is defined
+
+- name: Remove older repo version
+  file:
+    path: "/tmp/collections/{{ collection_name }}/"
+  when: collection_dir.stat.islnk is defined
+
+- name: Create plugins/modules/ if not exist
+  file:
+    path: "/var/lib/awx/.ansible/plugins/modules/"
+    state: directory
+  when: 
+    - set_module in "Y, y, yes"
+    - plugins_dir.stat.islnk is not defined or modules_dir.stat.islnk is not defined 

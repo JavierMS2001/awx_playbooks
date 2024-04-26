@@ -1,0 +1,7 @@
+---
+- name: Install collections from GitHub
+  hosts: localhost
+  become: true
+  roles:
+    role: install-collections
+

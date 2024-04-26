@@ -1,0 +1,4 @@
+---
+
+- include_tasks: check-dir.yml
+- include_tasks: install-collection.yml
