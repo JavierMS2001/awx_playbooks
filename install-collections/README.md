@@ -1,7 +1,7 @@
 Playbook que se encarga de instalar modulos y colecciones desde Git
-en versiones de Ansible posteriores a 2.10.
+en versiones de Ansible anteriores a 2.10.
 
-		- Variable Info -
+- Variable Info -
 
 {{ repo }}		= Se introduce el url .git del repositorio que queramos clonar.
 
