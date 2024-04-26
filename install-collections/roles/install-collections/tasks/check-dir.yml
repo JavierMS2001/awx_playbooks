@@ -26,6 +26,13 @@
   file:
     path: "/var/lib/awx/.ansible/plugins/modules/"
     state: directory
+  register: module
   when: 
     - set_module in "Y, y, yes"
     - plugins_dir.stat.islnk is not defined or modules_dir.stat.islnk is not defined 
+
+- name: Set Module
+  copy:
+        src: "/tmp/collections/{{ collection_name }}/{{ collection_name }}/plugins/modules/{{ module_name }}.py"
+        dest: "/var/lib/awx/.ansible/plugins/modules/{{ module_name }}.py"
+  when: set_module in "Y, y, yes"
