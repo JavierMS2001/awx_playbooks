@@ -1,0 +1,5 @@
+---
+
+- name: Check if exist repo
+  stat:
+    path: "/tmp/collections/"

@@ -5,28 +5,45 @@
   tasks:
     - name: Check if exist repo
       stat:
-        path: "/tmp/collections/"
+        path: "/tmp/collections/{{ collection_name }}/"
       register: collection_dir
+
+    - name: Check if exist plugins/ dir
+      stat:
+        path: "/var/lib/awx/.ansible/plugins/"
+      register: plugins_dir
+
+    - name: Check if exist modules/ dir
+      stat:
+        path: "/var/lib/awx/.ansible/plugins/modules/"
+      register: modules_dir
+      when: plugins_dir.stat.islnk is not defined
 
     - name: Remove older repo version
       file:
-        path: "/tmp/collections/"
+        path: "/tmp/collections/{{ collection_name }}"
         state: absent
-      when: collection_dir is succeeded
+      when: collection_dir.stat.islnk is defined
 
     - name: Get Git repo
       git:
         repo: "{{ repo }}"
-        dest: "/tmp/collections/"
+        dest: "/tmp/collections/{{ collection_name }}"
+
+    - name: Create plugins/modules/ if not exist
+      file:
+        path: "/var/lib/awx/.ansible/plugins/modules/"
+        state: directory
+      when: plugins_dir.stat.islnk is not defined or modules_dir.stat.islnk is not defined
 
     - name: Set Module
       copy:
-        src: "/tmp/collections/{{ collection_name }}/plugins/modules/{{ module_name }}.py"
+        src: "/tmp/collections/{{ collection_name }}/{{ collection_name }}/plugins/modules/{{ module_name }}.py"
         dest: "/var/lib/awx/.ansible/plugins/modules/{{ module_name }}.py"
       when: set_module in "Y, y, yes"
 
     - name: Build collection 
-      shell: "cd /tmp/collections/{{ collection_name }} && ansible-galaxy collection build"
+      shell: "cd /tmp/collections/{{ collection_name }}/{{ collection_name }} && ansible-galaxy collection build"
 
     - name: Install collection
-      shell: "cd /tmp/collections/{{ collection_name }} && ansible-galaxy collection install *.tar.gz"
+      shell: "cd /tmp/collections/{{ collection_name }}/{{ collection_name }} && ansible-galaxy collection install *.tar.gz"
