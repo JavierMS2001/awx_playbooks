@@ -21,6 +21,20 @@
   args:
    executable: /bin/bash
 
+- name: Set mariadb Config
+  template:
+          src: files/50-server.cnf
+          dest: /etc/my.cnf
+          owner: root
+          group: root
+          mode: '0755'
+
+- name: Restart mariadb
+  service:
+          name: mariadb
+          enabled: true
+          state: restarted
+
 - name: Create database
   mysql_db:
           name: "{{ database_name }}"
