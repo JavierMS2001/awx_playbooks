@@ -1,6 +1,6 @@
 ---
 - name: Converge
   hosts: all
-  gather_facts: true
+  gather_facts: false
   roles:
     - role: install-collections
