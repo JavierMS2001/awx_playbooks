@@ -1,0 +1,10 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: Test-Install_Collections
+    image: ubi8-ansible
+    pre_build_image: true
+    privileged: true
+    registry: true
+    command: /usr/sbin/init

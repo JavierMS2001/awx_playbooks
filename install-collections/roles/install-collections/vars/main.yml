@@ -1,8 +1,11 @@
 ---
 
-repo: "https://github.com/test/collection.git"
+#repo: "https://github.com/test/collection.git"
+repo: https://github.com/JavierMS2001/modules.git
 
-collection_name: "collection_test"
-module_name: "module_test"
+#collection_name: "collection_test"
+collection_name: pokeinfo
+#module_name: "module_test"
+module_name: pokeinfo
 
 set_module: "y"

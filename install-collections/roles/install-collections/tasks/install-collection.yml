@@ -5,6 +5,13 @@
     repo: "{{ repo }}"
     dest: "/tmp/collections/{{ collection_name }}"
 
+- name: Set Module
+  copy:
+        src: "/tmp/collections/{{ collection_name }}/{{ collection_name }}/plugins/modules/{{ module_name }}.py"
+        dest: "/var/lib/awx/.ansible/plugins/modules/{{ module_name }}.py"
+        remote_src: true
+  when: set_module in "Y, y, yes"
+
 - name: Build collection
   shell: "cd /tmp/collections/{{ collection_name }}/{{ collection_name }} && ansible-galaxy collection build --force"
 

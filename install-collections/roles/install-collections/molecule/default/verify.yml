@@ -1,0 +1,15 @@
+---
+- name: Test collection
+  hosts: all
+  tasks:
+    - name: Get Pokemon data
+      pokeinfo:
+        name: "Pikachu"
+      register: poke_data
+
+    - debug:
+        msg:
+          - "Name: {{ poke_data.pokemon_data.name }}"
+          - "Pokedex ID: {{ poke_data.pokemon_data.id }}"
+          - "Type: {% for type in poke_data.pokemon_data.types %}{{ type.type.name }} {% endfor %}"
+          - "Base-Stats: {% for stats in poke_data.pokemon_data.stats %} {{ stats.stat.name }}={{ stats.base_stat }}{% endfor %}"

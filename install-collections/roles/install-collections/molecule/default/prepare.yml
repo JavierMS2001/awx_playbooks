@@ -1,0 +1,9 @@
+---
+- name: Prepare instances for testing
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Install git
+      yum:
+        name: git
+        state: present
