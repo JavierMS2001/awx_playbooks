@@ -33,9 +33,8 @@
           password: "{{ db_user_pass }}"
           priv: 'bdwordpress.*:ALL,GRANT'
           host: '%'
-          login_user: "{{ db_root_user }}"
-          login_password: "{{ db_root_pass }}"
-          login_host: localhost
+          login_user: '{{ db_root_user }}'
+          login_password: '{{ db_root_pass }}'
           state: present
 
 - name: Enable mysql service in firewall
