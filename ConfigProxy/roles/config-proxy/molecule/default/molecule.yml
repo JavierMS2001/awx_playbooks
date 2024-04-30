@@ -1,0 +1,50 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: Debian-apache
+    image: debian-apache:11.9
+    pre_build_image: true
+    privileged: true
+    registry: false
+    ansible_python_interpreter: /usr/bin/python3
+    volumes:
+      - /home/$USER/dockers:/var/www/html
+    published_ports:
+      - 8000:80
+    docker_networks:
+      - name: "JaviVerso"
+        ipam_config:
+          - subnet: "10.30.50.0/24"
+    networks:
+      - name: "JaviVerso"
+        ipv4_address: '10.30.50.10'
+    
+
+  - name: Ubi8-httpd
+    image: ubi8-httpd:v1
+    command: /usr/sbin/init
+    pre_build_image: true
+    privileged: true
+    registry: false
+    volumes:
+      - /home/$USER/dockers:/usr/local/apache2/htdocs
+    published_ports:
+      - 8080:80
+    networks:
+      - name: "JaviVerso"
+        ipv4_address: '10.30.50.11'
+
+  - name: Wordpress
+    image: wordpress-python:v1
+    pre_build_image: true
+    published_ports:
+      - 9000:80
+    volumes:
+      - "/home/$USER/dockers/wordpress:/var/www/html"
+    networks:
+      - name: "JaviVerso"
+        ipv4_address: '10.30.50.12'
+
+verifier:
+  name: ansible

@@ -2,7 +2,7 @@
 
 - name: Set Proxy Config
   template:
-          src: files/centos/proxy.conf
+          src: "files/{{ ansible_os_family }}/proxy.conf"
           dest: /etc/httpd/conf.d/proxy.conf
           owner: root
           group: root

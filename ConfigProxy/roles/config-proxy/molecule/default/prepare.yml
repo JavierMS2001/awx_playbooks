@@ -1,0 +1,17 @@
+---
+- name: Prepare instances for testing - Debian_apache2, Wordpress
+  hosts: Debian-apache, Wordpress
+  tasks:
+    - name: Restart apache
+      service:
+        name: apache2
+        state: restarted
+
+- name: Prepare instances for testing - Ubi8
+  hosts: Ubi8-httpd
+  tasks:
+    - name: Restart apache
+      service:
+        name: httpd
+        state: restarted
+

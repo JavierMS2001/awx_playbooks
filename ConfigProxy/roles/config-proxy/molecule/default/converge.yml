@@ -1,0 +1,6 @@
+---
+- name: Converge
+  hosts: Ubi8-httpd, Debian-apache
+  gather_facts: true
+  roles:
+    - role: config-proxy

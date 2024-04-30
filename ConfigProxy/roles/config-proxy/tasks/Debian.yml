@@ -2,36 +2,44 @@
 
 - name: Set Proxy Config
   template:
-          src: files/debian/proxy.conf
+          src: "files/{{ ansible_os_family }}/proxy.conf"
           dest: /etc/apache2/sites-available/proxy.conf
           owner: root
           group: root
           mode: '0644'
+  register: copy_config
 
 - name: Enable Proxy Module
   apache2_module:
           name: proxy
           state: present
+  register: proxy
 
 - name: Enable proxy_http module
   apache2_module:
           name: proxy_http
           state: present
+  register: proxy_http
 
 - name: Restart apache service
   service:
           name: apache2
           state: restarted
+  when: (copy_config.changed) or (proxy.changed) or (proxy_http.changed)
 
 - name: Enable proxy config
   command: a2ensite proxy.conf
   args:
           chdir: /etc/apache2/sites-available/
           creates: /etc/apache2/sites-enabled/proxy.conf
-  register: config
+  register: enable_proxy
+
+- name: Disable default site
+  command: a2dissite 000-default.conf  
+  when: enable_proxy.changed
 
 - name: Restart apache service
   service:
           name: apache2
           state: restarted
-  when: config.changed
+  when: enable_proxy.changed
