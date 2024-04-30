@@ -26,6 +26,8 @@
           owner: apache
           group: apache
           mode: '0755'
+  retries: 3
+  delay: 10
 
 - name: Enable WordPress Configuration
   template:

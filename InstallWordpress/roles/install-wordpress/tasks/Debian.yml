@@ -22,6 +22,8 @@
   get_url:
           url: "https://wordpress.org/latest.tar.gz"
           dest: "/tmp/wordpress.tar.gz"
+  retries: 3
+  delay: 10
 
 - name: Extract Wordpress files
   unarchive:
