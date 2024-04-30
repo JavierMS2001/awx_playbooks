@@ -11,8 +11,8 @@
         msg:
           - "Name: {{ poke_data.pokemon_data.name }}"
           - "Pokedex ID: {{ poke_data.pokemon_data.id }}"
-          - "Height: {{ poke_data.pokemon_data.height }}"
-          - "Weight: {{ poke_data.pokemon_data.weight }}"
+          - "Height: {{ poke_data.pokemon_data.height|int / 10}} mtrs."
+          - "Weight: {{ poke_data.pokemon_data.weight|int / 10}} kgs."
           - "Type: {% for type in poke_data.pokemon_data.types %}{{ type.type.name }} {% endfor %}"
           - "Base-Stats: {% for stats in poke_data.pokemon_data.stats %} {{ stats.stat.name }}={{ stats.base_stat }}{% endfor %}"
           - "Moves: {% for moves in poke_data.pokemon_data.moves %} {{ moves.move.name }} {% endfor %}"
