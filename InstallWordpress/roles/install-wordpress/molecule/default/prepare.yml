@@ -1,0 +1,32 @@
+---
+- name: Prepare database instance for testing
+  hosts: Mariadb-Wordpress
+  gather_facts: true
+  vars_files:
+    - "../../vars/database-server.yml"
+  tasks:
+  - name: Start mariadb
+    service:
+      name: mariadb
+      enabled: true
+      state: started 
+
+
+  - name: Create database
+    mysql_db:
+      name: "{{ database_name }}"
+      login_user: "{{ db_root_user }}"
+      login_password: "{{ db_root_pass }}"
+      login_host: localhost
+      state: present
+
+  - name: Create user to database
+    mysql_user:
+      name: "{{ db_username }}"
+      password: "{{ db_user_pass }}"
+      priv: 'bdwordpress.*:ALL,GRANT'
+      host: '%'
+      login_user: "{{ db_root_user }}"
+      login_password: "{{ db_root_pass }}"
+      login_host: localhost
+      state: present

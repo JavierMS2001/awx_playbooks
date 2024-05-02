@@ -1,0 +1,21 @@
+---
+- name: Cleanup
+  hosts: localhost
+  vars_files:
+    - "../../vars/main.yml"
+  tasks:
+    
+    - name: Remove register file
+      file:
+        path: "{{ backups_dir }}/backup_file.txt"
+        state: absent
+
+    - name: Remove mariadb-ubi_molecule-test backups folder
+      file:
+        path: "{{ backups_dir }}/MariaDB/mariadb-ubi_molecule-test/"
+        state: absent
+
+    - name: Remove mariadb-deb_molecule-test backups folder
+      file:
+        path: "{{ backups_dir }}/MariaDB/mariadb-deb_molecule-test/"
+        state: absent

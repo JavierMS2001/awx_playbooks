@@ -1,5 +1,4 @@
 ---
-
 - name: Install required packages
   apt:
           name:
@@ -14,7 +13,7 @@
 - name: Import MongoDB key
   become: yes
   apt_key:
-          url: "https://www.mongodb.org/static/pgp/server-{{ mongo_version }}.asc"
+          url: "https://www.mongodb.org/static/pgp/server-{{ deb_mongo_version }}.asc"
   retries: 3
   delay: 10
   ignore_errors: true
@@ -23,8 +22,8 @@
 - name: Add MongoDB repository to sources.list.d
   become: yes
   lineinfile:
-    path: "/etc/apt/sources.list.d/mongodb-org-{{ mongo_version }}.list"
-    line: "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/{{ mongo_version }} main"
+    path: "/etc/apt/sources.list.d/mongodb-org-{{ deb_mongo_version }}.list"
+    line: "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/{{ deb_mongo_version }} main"
     create: yes
 
 - name: Update repositories
@@ -37,7 +36,9 @@
 
 - name: Install MongoDB
   apt:
-          name: mongodb-org
+          name: 
+            - mongodb-org
+            - mongosh
           state: latest
   retries: 3
   delay: 10

@@ -1,0 +1,14 @@
+---
+
+db_name: bdwordpress      # Data Base username
+db_username: root         # Backups username
+db_password: vagrant      # Backups user pass
+
+#   Path to save the backups
+
+backups_dir: "/home/vagrant/backups"
+
+#   If you will do tests with molecule, set this
+#   with Y/y or Yes/yes.
+
+register_file: y

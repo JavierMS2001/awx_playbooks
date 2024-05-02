@@ -18,3 +18,7 @@ platforms:
     privileged: true
     published_ports:
       - 8000:80
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

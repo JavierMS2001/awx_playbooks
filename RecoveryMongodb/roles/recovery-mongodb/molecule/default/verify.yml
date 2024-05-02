@@ -1,0 +1,17 @@
+- name: Verify
+  hosts: all
+  vars_files:
+    - "../../vars/main.yml"
+  tasks:
+    - name: Testing recovery db
+      community.mongodb.mongodb_shell:
+          login_user: "{{ backup_user }}"
+          login_password: "{{ user_password }}"
+          db: "TestingDB"
+          eval: "db.runCommand( { hello: 1 } )"
+      register: test
+
+    - name: Recovery role
+      debug:
+        msg: "The database was recovery in {{ ansible_host }}!"
+      when: test is success

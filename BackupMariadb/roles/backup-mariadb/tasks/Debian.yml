@@ -1,0 +1,29 @@
+---
+
+- name: Crear directorio de copias de seguridad
+  file:
+          path: /backup/MariaDB
+          state: directory
+          mode: '0755'
+
+- name: Obeneter fecha y hora actual
+  set_fact:
+          timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.time }}"
+
+- name: Realizar backup de la base de datos Debian
+  mysql_db:
+          state: dump
+          name: bdwordpress
+          target: "/backup/MariaDB/bdwordpress-Debian_backup_{{ timestamp }}.sql"
+
+- name: Comprobar si se ha realizado correctamente el backup Debian
+  stat:
+          path: "/backup/MariaDB/bdwordpress-Debian_backup_{{ timestamp }}.sql"
+  register: result
+
+- name: Importar backup al control node Debian
+  fetch:
+        src: "/backup/MariaDB/bdwordpress-Debian_backup_{{ timestamp }}.sql"
+        dest: "{{ backups_dir }}/MariaDB/Debian-server/"
+        flat: yes
+        when: result is success

@@ -1,0 +1,16 @@
+---
+- name: Prepare instances for testing
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Install iptables - RedHat
+      yum:
+        name: iptables
+        state: present
+      when: ansible_os_family == "RedHat"
+
+    - name: Set repo
+      template:
+        src: "files/MariaDB.repo"
+        dest: /etc/yum.repos.d/MariaDB.repo
+      when: ansible_os_family == "RedHat"

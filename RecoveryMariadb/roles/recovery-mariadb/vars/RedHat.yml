@@ -1,0 +1,5 @@
+---
+
+# The recovery directory path of the backup server to RedHat.
+
+backup_dir: "/home/$USER/backups/MariaDB/RedHat-Mariadb"

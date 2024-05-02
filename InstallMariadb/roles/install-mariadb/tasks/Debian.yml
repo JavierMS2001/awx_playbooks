@@ -8,6 +8,7 @@
                   - python3-mysqldb
                   - ufw
           state: present
+  register: install
 
 - name: Enable UWF
   ufw:
@@ -18,12 +19,14 @@
           name: mariadb
           enabled: true
           state: restarted
+  when: install.changed
 
 - name: Use mysql_secure_installation to set password
   shell: |
           echo -e "\nn\nY\n{{ db_root_pass }}\n{{ db_root_pass }}\nY\nn\nY\nY\n" | sudo mysql_secure_installation
   args:
    executable: /bin/bash
+  when: install.changed
 
 - name: Set mariadb Config
   template:
@@ -32,12 +35,14 @@
           owner: root
           group: root
           mode: '0755'
+  register: config
 
 - name: Restart mariadb
   service:
           name: mariadb
           enabled: true
           state: restarted
+  when: config.changed
 
 - name: Create database
   mysql_db:
@@ -73,4 +78,4 @@
 - name: Reload firewall configuration
   ufw:
           state: reloaded
-  when: port_3306.changed and port_22.changed
+  when: port_3306.changed or port_22.changed

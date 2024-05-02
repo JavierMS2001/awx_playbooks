@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: Debian-Wordpress, Ubi8-Wordpress
+  tasks:
+
+  - name: Wordpress is in /var/www/html/
+    stat:
+      path: "/var/www/html/wordpress/"
+
+  - name: Wordpress is configured
+    stat:
+      path: "/var/www/html/wordpress/wp-config.php"
+
+  - name: Wordpress web is working
+    uri:
+      url: http://localhost/wordpress/
+      method: GET
+    register: web
+    
+  - name: Wordpress is working!
+    debug:
+      msg: "Web: {{ web.status }}"

@@ -5,3 +5,5 @@ db_root_user: "root"
 database_name: "bdwordpress"
 db_username: "wordpress-user"
 db_user_pass: "1234"
+
+service: "mariadb.service"

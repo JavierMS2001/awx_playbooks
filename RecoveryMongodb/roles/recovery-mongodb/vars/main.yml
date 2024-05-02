@@ -1,0 +1,17 @@
+---
+
+backup_user: "admin"
+user_password: "vagrant"
+auth_database: "admin"
+
+backup_server: "localhost"
+
+#   If you want recovery the last recovery file, set this
+#   variable with "n" or "no"
+
+specific_backup: n
+
+#   If you want recovery to a specific recovery file, write
+#   in specific_backup var the path of the recovery file.
+
+# specific_backup: "/home/$USER/backups/test/{{ ansible_os_family }}/test.bson"

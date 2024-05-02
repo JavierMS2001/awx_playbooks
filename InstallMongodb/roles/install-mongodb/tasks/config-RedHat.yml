@@ -21,6 +21,7 @@
           permanent: true
           state: enabled
   register: firewall
+  ignore_errors: true
 
 - name: Restart firewall
   systemd:
@@ -28,12 +29,21 @@
           state: restarted
   when: firewall.changed
 
+- name: Open ports to mariadb service with iptables
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 27017
+    jump: ACCEPT
+  when: firewall.failed
+
 - name: Create RemoteDataBase
   community.mongodb.mongodb_shell:
           login_user: "{{ admin_user }}"
           login_password: "{{ admin_password }}"
           db: "Remotedb"
           eval: "db.createCollection('TestingRemotingDB')"
+  when: restart.changed
 
 - name: Create Remote User
   community.mongodb.mongodb_user:
@@ -46,3 +56,4 @@
           roles:
                   - { db: "admin", role: "readWrite" }
                   - { db: "Remotedb", role: "readWrite" }
+  when: restart.changed

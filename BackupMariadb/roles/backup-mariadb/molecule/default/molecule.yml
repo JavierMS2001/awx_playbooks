@@ -1,0 +1,15 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: mariadb-deb_molecule-test
+    image: mariadb-deb:1.1
+    pre_build_image: true
+    privileged: true
+
+  - name: mariadb-ubi_molecule-test
+    image: mariadb-ubi8:v1
+    pre_build_image: true
+    privileged: true
+    registry: false
+    command: /usr/sbin/init

@@ -1,0 +1,31 @@
+---
+- name: Crear directorio de copias de seguridad
+  file:
+          path: /backup/MariaDB
+          state: directory
+          mode: '0755'
+
+- name: Obeneter fecha y hora actual
+  set_fact:
+          timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.time }}"
+
+
+- name: Realizar backup de la base de datos CentOS
+  mysql_db:
+          login_user: root
+          login_password: vagrant
+          state: dump
+          name: bdwordpress
+          target: "/backup/MariaDB/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
+
+- name: Comprobar si se ha realizado correctamente el backup CentOS
+  stat:
+          path: "/backup/MariaDB/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
+  register: result
+
+- name: Importar backup al control node CentOS
+  fetch: 
+        src: "/backup/MariaDB/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
+        dest: "{{ backups_dir }}/MariaDB/CentOS-server/"
+        flat: yes
+        when: result is success 

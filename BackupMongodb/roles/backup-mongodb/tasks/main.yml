@@ -1,0 +1,42 @@
+---
+- name: Create backup dir
+  file:
+          path: /backup/MongoDB/
+          state: directory
+          mode: '0755'
+  register: exist
+
+- name: Get actual time and date
+  set_fact:
+          timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.hour }}-{{ ansible_date_time.minute }}"
+
+- name: Dump database
+  command: >
+          sudo mongodump 
+          -u "{{ backup_user }}"
+          -p "{{ user_password }}" 
+          --authenticationDatabase "{{ auth_database }}"
+          --db "{{ database_name }}" 
+          --archive="{{ backup_path }}.bson"
+  register: backup
+  when: exist.changed
+
+- name: Check backup
+  stat:
+          path: "{{ backup_path }}.bson"
+  register: result
+
+- name: Import backup to control node
+  fetch:
+          src: "{{ backup_path }}.bson"
+          dest: "{{ backups_dir }}/{{ ansible_host }}/"
+          flat: yes
+  register: fetch_result
+  when: result is success
+
+- name: Create register file
+  copy:
+    content: "{{ fetch_result.dest }}"
+    dest: "{{ backups_dir }}/register_file.txt"
+  delegate_to: localhost
+  when: register_file in "Y, y, YES, yes, Yes" and backup is changed

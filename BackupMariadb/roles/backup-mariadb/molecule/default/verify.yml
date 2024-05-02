@@ -1,0 +1,21 @@
+- name: Verify
+  hosts: all
+  vars_files:
+    - "../../vars/main.yml"
+  tasks:
+    - name: Read register file
+      shell: "cat {{ backups_dir }}/backup_file.txt"
+      register: backup_file_content
+      delegate_to: localhost
+
+    - name: Verify backup file
+      stat:
+        path: "{{ backup_file_content.stdout }}"
+      register: backup_file_stat
+      delegate_to: localhost
+      failed_when: not backup_file_stat.stat.exists
+
+    - name: Backup is working
+      debug:
+        msg: "Backup working correctly!"
+      when: backup_file_stat.stat.exists

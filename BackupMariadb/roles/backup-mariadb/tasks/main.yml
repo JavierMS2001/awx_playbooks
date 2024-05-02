@@ -1,0 +1,46 @@
+---
+
+- name: Check backup directory
+  file:
+    path: /backup/MariaDB
+    state: directory
+    mode: '0755'
+  register: exist
+
+- name: Get date time
+  set_fact:
+    timestamp: "{{ ansible_date_time.date }}_{{ ansible_date_time.time }}"
+
+- name: Check backup
+  stat:
+    path: "/backup/MariaDB/{{ db_name }}-{{ ansible_host }}_backup_{{ timestamp }}.sql"
+
+- name: Do Database Backup
+  mysql_db:
+    name: "{{ db_name }}"
+    login_user: "{{ db_username }}"
+    login_password: "{{ db_password }}"
+    state: dump
+    target: "/backup/MariaDB/{{ db_name }}-{{ ansible_host }}_backup_{{ timestamp }}.sql"
+  register: backup
+  when: exist is changed
+
+- name: Check backup
+  stat:
+    path: "/backup/MariaDB/{{ db_name }}-{{ ansible_host }}_backup_{{ timestamp }}.sql"
+  register: result
+
+- name: Import backup to control node
+  fetch:
+    src: "/backup/MariaDB/{{ db_name }}-{{ ansible_host }}_backup_{{ timestamp }}.sql"
+    dest: "{{ backups_dir }}/MariaDB/{{ ansible_host }}/"
+    flat: yes
+  register: fetch_result
+  when: backup is changed
+
+- name: Create register file
+  copy:
+    content: "{{ fetch_result.dest }}"
+    dest: "{{ backups_dir }}/backup_file.txt"
+  delegate_to: localhost
+  when: register_file in "Y, y, YES, yes, Yes" and backup is changed

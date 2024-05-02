@@ -1,2 +1,2 @@
 ---
-selinux: "y"
+selinux: "N"      # Var to set if you want configure SELinux in Red Hat OS

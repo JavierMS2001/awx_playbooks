@@ -1,11 +1,12 @@
 ---
 
-control_node: "localhost"
-mongo_version: "7.0"
-server_version: 9
+control_node: "localhost"     # Control node name or IP
+deb_mongo_version: "4.4"      # Mongodb version to Debian
+rh_mongo_version: "4.4"       # Mongodb version to RedHat
+rh_version: 8                 # RedHat System version
 
-admin_user: "admin"
-admin_password: "vagrant"
+admin_user: "admin"           # Name to mongodb admin user
+admin_password: "vagrant"     # Password to mongodb admin user
 
-remote_user: "remote_user"
-remote_password: "vagrant"
+remote_user: "remote_user"    # Name to mongodb remote user
+remote_password: "vagrant"    # Password to mongodb remote user

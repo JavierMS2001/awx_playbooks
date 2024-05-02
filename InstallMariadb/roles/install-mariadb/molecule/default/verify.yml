@@ -1,0 +1,21 @@
+- name: Verify
+  hosts: all
+  vars_files:
+    - "../../vars/{{ ansible_os_family }}.yml"
+  pre_tasks:
+    - name: Service facts
+      service_facts:
+      
+  tasks:
+
+  - name: Testing MariaDB status
+    debug:
+      var: ansible_facts.services[ '{{ service }}' ].state
+    failed_when: "ansible_facts.services['{{ service }}'].state != 'running'"
+
+  - name: Testing DataBase and Connection with Remote User
+    mysql_query:
+      login_db: "{{ database_name }}"
+      login_user: "{{ db_username }}"
+      login_password: "{{ db_user_pass }}"
+      query: SHOW TABLES

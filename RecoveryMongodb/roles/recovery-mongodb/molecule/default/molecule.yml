@@ -1,0 +1,26 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: mongodb-deb_molecule-test
+    image: deb-mongodb:v1
+    pre_build_image: true
+    privileged: true
+    registry: false
+    cgroupns_mode: host
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    published_ports:
+      - 3000:27017
+
+  - name: mongodb-ubi_molecule-test
+    image: ubi8-mongodb:v1
+    pre_build_image: true
+    privileged: true
+    command: /sbin/init
+    published_ports:
+      - 3300:27017

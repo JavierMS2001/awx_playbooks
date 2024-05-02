@@ -1,0 +1,17 @@
+- name: Verify
+  hosts: all
+  vars_files:
+    - "../../vars/main.yml"
+  tasks:
+    - name: Testing Recovery
+      mysql_query:
+        login_db: "{{ db_name }}"
+        login_user: "{{ db_username }}"
+        login_password: "{{ db_password }}"
+        query: SHOW TABLES
+      register: test
+
+    - name: Rol tested
+      debug:
+        msg: "The database was recovery in {{ ansible_host }}!"
+      when: test is success

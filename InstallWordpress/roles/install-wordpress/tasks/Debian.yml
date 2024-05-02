@@ -1,5 +1,4 @@
 ---
-
 - name: Install required packages
   apt:
           name: "{{ item  }}"
@@ -17,13 +16,23 @@
   service:
           name: apache2
           state: restarted
-        
+  when: packets.changed
+
+- name: Check wordpress.tar.gz
+  stat:
+    path: "/tmp/wordpress.tar.gz"
+  register: tar_wordpress
+
 - name: Download Wordpress files
   get_url:
           url: "https://wordpress.org/latest.tar.gz"
           dest: "/tmp/wordpress.tar.gz"
-  retries: 3
-  delay: 10
+  when: not tar_wordpress.stat.exists
+
+- name: Check wordpress is installing
+  stat:
+    path: "/var/www/html/wordpress/"
+  register: wordpress_file
 
 - name: Extract Wordpress files
   unarchive:
@@ -33,11 +42,14 @@
           owner: www-data
           group: www-data
           mode: '0755'
+            #  when: not wordpress_file.stat.exists
+  register: wordpress_installation
 
 - name: Enable Wordpress configuration
   template:
-          src: files/debian/wp-config.php
+          src: "files/{{ ansible_os_family }}/wp-config.php"
           dest: /var/www/html/wordpress/wp-config.php
           owner: www-data
           group: www-data
           mode: '0755'
+  when: wordpress_installation.changed

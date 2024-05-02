@@ -32,6 +32,7 @@
           login_password: "{{ admin_password }}"
           db: "Remotedb"
           eval: "db.createCollection('TestingRemotingDB')"
+  when: restart.changed
 
 - name: Create Remote User
   community.mongodb.mongodb_user:
@@ -44,3 +45,4 @@
           roles:
                   - { db: "admin", role: "readWrite" }
                   - { db: "Remotedb", role: "readWrite" }
+  when: restart.changed

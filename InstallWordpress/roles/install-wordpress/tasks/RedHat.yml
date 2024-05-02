@@ -10,6 +10,7 @@
         - php-xml
         - php-mbstring
         - php-mysqli
+        - php-json
   register: "packets"
 
 - name: Restart http
@@ -26,16 +27,15 @@
           owner: apache
           group: apache
           mode: '0755'
-  retries: 3
-  delay: 10
 
 - name: Enable WordPress Configuration
   template:
-          src: files/centos/wp-config.php
+          src: "files/{{ ansible_os_family }}/wp-config.php"
           dest: /var/www/html/wordpress/wp-config.php
           owner: apache
           group: apache
           mode: '0644'
+  register: "config"
 
 - name: Disabled SeLinux
   template:
@@ -44,6 +44,7 @@
           owner: root
           group: root
           mode: '0644'
+  when: selinux in "Y, y, yes"
   register: "reboot"  
 
 - name: Reboot server
@@ -55,5 +56,5 @@
 - name: Start http Service
   service:
           name: httpd
-          state: started
-  when: "reboot.changed"
+          state: restarted
+  when: "config.changed"

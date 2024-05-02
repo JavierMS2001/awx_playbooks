@@ -1,0 +1,28 @@
+- name: Verify
+  hosts: mongodb-deb_molecule-test, mongodb-ubi_molecule-test
+  vars_files:
+    - "vars/{{ ansible_os_family }}.yml"
+    - "../../vars/main.yml"
+  pre_tasks:
+    - name: Service facts
+      service_facts:
+  tasks:
+    - name: testing MongoDB status
+      debug:
+        msg: "MongoDB is '{{  ansible_facts.services['mongod.service'].state }}'"
+      failed_when: "ansible_facts.services['mongod.service'].state != 'running'"
+
+    - name: testing admin user
+      community.mongodb.mongodb_shell:
+        login_user: "{{ admin_user }}"
+        login_password: "{{ admin_password }}"
+        eval: "db.runCommand( { hello: 1 } )"
+
+    - name: testing Remote Database and connection with remote User
+      community.mongodb.mongodb_shell:
+          login_user: "{{ remote_user }}"
+          login_password: "{{ remote_password }}"
+          login_database: "Remotedb"
+          login_host: "{{ ip_testing }}"
+          eval: "db.runCommand( { hello: 1 } )"
+      delegate_to: mongo-client_molecule-test

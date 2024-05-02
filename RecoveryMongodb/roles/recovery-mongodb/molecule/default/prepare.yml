@@ -1,0 +1,20 @@
+- name: Prepare instance for testing
+  hosts: all
+  gather_facts: true
+  vars_files:
+    - "../../vars/main.yml"
+  tasks:
+
+  - name: Start MongoDB
+    service:
+      name: mongod
+      enabled: true
+      state: started
+
+  - name: Create backup-user
+    community.mongodb.mongodb_user:
+      database: "{{ auth_database }}"
+      name: "{{ backup_user }}"
+      password: "{{ user_password }}"
+      state: present
+      roles: ["root"]

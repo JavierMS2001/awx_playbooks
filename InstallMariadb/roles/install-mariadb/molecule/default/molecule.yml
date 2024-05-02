@@ -1,0 +1,19 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: Ubi8
+    image: ubi8-pre_mariadb:latest
+    privileged: true
+    command: /usr/sbin/init
+    registry: false
+    pre_build_image: true
+    published_ports:
+      - 3399:3306
+
+  - name: Debian11
+    image: debian-python:11.9
+    pre_build_image: true
+    privileged: true
+    published_ports:
+      - 3366:3306

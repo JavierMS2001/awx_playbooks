@@ -1,0 +1,7 @@
+---
+- name: Converge
+  hosts: mongodb-deb_molecule-test, mongodb-ubi_molecule-test
+  gather_facts: true
+  roles:
+    - role: install-mongodb
+

@@ -1,0 +1,31 @@
+---
+- name: Prepare instance for testing
+  hosts: all
+  gather_facts: true
+  vars_files:
+    - "../../vars/main.yml"
+    - "../../vars/{{ ansible_os_family }}.yml"
+  tasks:
+  - name: Start MariaDB
+    service:
+      name: mariadb
+      enabled: true
+      state: started
+
+  - name: Set root password to ubi
+    shell: |
+          echo -e "\nn\nY\npassword\npassword\nY\nn\nY\nY\n" | sudo mariadb-secure-installation
+    args:
+      executable: /bin/bash
+    when: ansible_os_family == "RedHat"
+
+  - name: Create backup-user
+    mysql_user:
+      name: "{{ db_username }}"
+      password: "{{ db_password }}"
+      priv: '*.*:ALL,GRANT'
+      host: '%'
+      login_user: root
+      login_password: password
+      state: present
+    become_method: root

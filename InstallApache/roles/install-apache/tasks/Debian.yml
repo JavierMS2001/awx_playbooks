@@ -23,23 +23,23 @@
   ufw:
           rule: allow
           port: "80"
+  register: port_80
 
 - name: Open port 443
   ufw:
           rule: allow
           port: "443"
-
-- name: Open port 22
-  ufw:
-          rule: allow
-          port: "22"
+  register: port_443
 
 - name: Restart firewall
   ufw:
           state: reloaded
+  when: port_80.changed or port_443.changed
+  register: firewall
 
 - name: Restart apache
   become: yes
   service:
           name: apache2
           state: restarted
+  when: firewall.changed

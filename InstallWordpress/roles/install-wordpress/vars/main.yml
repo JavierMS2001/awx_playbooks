@@ -1,0 +1,3 @@
+---
+
+selinux: "n"    # Var to set if you want configure SELinux in Red Hat OS

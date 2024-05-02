@@ -1,0 +1,6 @@
+---
+database_name: "bdwordpress"
+db_root_user: "root"
+db_root_pass: "vagrant"
+db_username: "wordpress-user"
+db_user_pass: "1234"

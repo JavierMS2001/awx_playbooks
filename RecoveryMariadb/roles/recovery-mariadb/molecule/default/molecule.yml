@@ -1,0 +1,15 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: mariadb-deb
+    image: mariadb-deb:1.1
+    pre_build_image: true
+    privileged: true
+
+  - name: mariadb-ubi
+    image: mariadb-ubi8:v1
+    pre_build_image: true
+    privileged: true
+    registry: false
+    command: /usr/sbin/init

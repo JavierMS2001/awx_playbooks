@@ -6,26 +6,27 @@
                 - python3
                 - python3-PyMySQL
         state: latest
-  retries: 3
-  delay: 10
-  register: mariadb_restart
+  register: install
 
 - name: Restart MariaDB
   service:
           name: mariadb
           enabled: true
           state: restarted
-  when: mariadb_restart.changed
+  when: install.changed
 
 - name: Use mysql_secure_installation to set password.
   shell: |
-          echo -e "\nn\nY\n{{ db_root_pass }}\n{{ db_root_pass }}\nY\nn\nY\nY\n" | sudo mysql_secure_installation
+          echo -e "\nn\nY\n{{ db_root_pass }}\n{{ db_root_pass }}\nY\nn\nY\nY\n" | sudo mariadb-secure-installation
   args:
    executable: /bin/bash
+  when: install.changed
 
 - name: Create database
   mysql_db:
           name: "{{ database_name }}"
+          login_user: "{{ db_root_user }}"
+          login_password: "{{ db_root_pass }}"
           login_host: localhost
           state: present
 
@@ -35,7 +36,9 @@
           password: "{{ db_user_pass }}"
           priv: 'bdwordpress.*:ALL,GRANT'
           host: '%'
-          login_user: '{{ db_root_user }}'
+          login_user: "{{ db_root_user }}"
+          login_password: "{{ db_root_pass }}"
+          login_host: localhost
           state: present
 
 - name: Enable mysql service in firewall
@@ -43,16 +46,27 @@
           service: mysql
           permanent: true
           state: enabled
+  register: firewall
+  ignore_errors: true
 
 - name: Open port 3306
   firewalld:
           port: 3306/tcp
           permanent: true
           state: enabled
-  register: firewall
+  when: firewall.changed
 
 - name: Restart firewall
   systemd:
           name: firewalld
           state: restarted
   when: firewall.changed
+
+- name: Open ports to mariadb service with iptables
+  iptables:
+    chain: INPUT
+    protocol: tcp
+    destination_port: 3306
+    jump: ACCEPT
+  when: firewall.failed
+

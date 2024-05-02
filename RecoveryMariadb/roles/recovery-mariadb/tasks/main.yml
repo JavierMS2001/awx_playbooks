@@ -1,0 +1,47 @@
+---
+- name: Include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Check recovery directory
+  become: true
+  file:
+    path: /backups/recovery
+    state: directory
+
+- name: Search backup files in directory
+  find:
+    paths: "{{ backup_dir }}"
+    patterns: "*.sql"
+    file_type: file
+  register: found_files
+  delegate_to: "{{ backup_server }}"
+  when: specific_backup in "N, n, no, NO"
+
+- name: Select last backup file
+  set_fact:
+    last_file: "{{ found_files.files | sort(attribute='mtime',reverse=true) | first }}"
+  delegate_to: "{{ backup_server }}"
+  when: specific_backup in "N, n, no, NO"
+
+- name: Copy backup file to database server
+  copy:
+    src: "{{ last_file.path }}"
+    dest: "/backups/recovery/recovery.sql"
+  register: copy
+  when: specific_backup in "N, n, no, NO"
+
+- name: Copy specific backup file to database server
+  copy:
+    src: "{{ specific_backup }}"
+    dest: "/backups/recovery/recovery.sql"
+  register: copy_specific
+  when: found_files is skipped
+
+- name: Recovery database
+  mysql_db:
+    login_user: "{{ db_username }}"
+    login_password: "{{ db_password }}"  
+    name: "{{ db_name }}"
+    state: import
+    target: "/backups/recovery/recovery.sql"
+  when: copy.changed or copy_specific.changed

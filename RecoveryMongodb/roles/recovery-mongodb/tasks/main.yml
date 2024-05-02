@@ -1,0 +1,47 @@
+---
+- name: Include OS-specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Check /backup directory
+  become: true
+  file:
+          path: /backup
+          state: directory
+
+- name: Search backups files in /backup
+  find:
+    paths: "{{ backup_dir }}"
+    patterns: "*.bson"
+    file_type: file
+  register: found_files
+  delegate_to: "{{ backup_server }}"
+  when: specific_backup in "N, n, no, NO"
+
+- name: Select last backup file
+  set_fact:
+    last_file: "{{ found_files.files | sort(attribute='mtime',reverse=true) | first }}"
+  delegate_to: "{{ backup_server }}"
+  when: specific_backup in "N, n, no, NO"
+
+- name: Copy backup file to database server
+  copy:
+    src: "{{ last_file.path }}"
+    dest: "/backup/restore.bson"
+  register: backup_file
+  when: specific_backup in "N, n, no, NO"
+
+- name: Copy specific backup file to database server
+  copy:
+    src: "{{ specific_backup }}"
+    dest: "/backup/restore.bson"
+  register: copy_specific
+  when: found_files is skipped
+
+- name: Recovery backup
+  command: >
+          sudo mongorestore
+          -u "{{ backup_user }}"
+          -p "{{ user_password }}"
+          --authenticationDatabase "{{ auth_database }}"
+          --archive=/backup/restore.bson
+  when: backup_file.changed or copy_specific.changed

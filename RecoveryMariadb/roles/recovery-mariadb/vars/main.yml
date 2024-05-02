@@ -1,0 +1,17 @@
+---
+
+backup_server: "localhost"        # Backup Server IP or hostname
+
+db_username: "wordpress-user"     # Backups Username
+db_password: "1234"               # Backups user password
+db_name: "bdwordpress"            # DataBase to recovery
+
+#   If you want recovery the last recovery file, set this
+#   variable with "n" or "no"
+
+specific_backup: n
+
+#   If you want recovery to a specific recovery file, write
+#   in specific_backup var the path of the recovery file.
+
+# specific_backup: "/home/$USER/backups/test/{{ ansible_os_family }}/test.sql"

@@ -1,0 +1,41 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: Debian-Wordpress
+    image: debian-apache:11.9
+    pre_build_image: true
+    privileged: true
+    registry: false
+    published_ports:
+      - 8000:80
+    docker_networks:
+      - name: "Red_Wordpress"
+        ipam_config:
+          - subnet: "10.30.50.0/24"
+    networks:
+      - name: "Red_Wordpress"
+        ipv4_address: "10.30.50.10"
+
+  - name: Ubi8-Wordpress
+    image: ubi8-httpd:v1
+    command: /usr/sbin/init
+    pre_build_image: true
+    privileged: true
+    registry: false
+    published_ports:
+      - 8080:80
+    networks:
+      - name: "Red_Wordpress"
+        ipv4_address: "10.30.50.20"
+
+  - name: Mariadb-Wordpress
+    image: mariadb-deb:1.1
+    pre_build_image: true
+    privileged: true
+    registry: false
+    published_ports:
+      - 9000:3306
+    networks:
+      - name: "Red_Wordpress"
+        ipv4_address: "10.30.50.30"

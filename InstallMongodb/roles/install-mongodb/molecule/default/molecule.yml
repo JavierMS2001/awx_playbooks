@@ -1,0 +1,47 @@
+---
+driver:
+  name: docker
+platforms:
+  - name: mongodb-deb_molecule-test
+    image: agss_debian-systemd:v1
+    pre_build_image: true
+    privileged: true
+    registry: false
+    cgroupns_mode: host
+    command: /sbin/init
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    published_ports:
+      - 3000:27017
+    docker_networks:
+      - name: "Red_MongoDB"
+        ipam_config:
+          - subnet: "10.30.60.0/24"
+    networks:
+      - name: "Red_MongoDB"
+        ipv4_address: '10.30.60.10'
+
+  - name: mongodb-ubi_molecule-test
+    image: ubi8-python:v1
+    pre_build_image: true
+    privileged: true
+    registry: false
+    command: /usr/sbin/init
+    published_ports:
+      - 3030:27017
+    networks:
+      - name: "Red_MongoDB"
+        ipv4_address: '10.30.60.20'
+
+  - name: mongo-client_molecule-test
+    image: ubi8-mongodb:v1
+    pre_build_image: true
+    privileged: true
+    published_ports:
+      - 3300:27017
+    networks:
+      - name: "Red_MongoDB"
+        ipv4_address: '10.30.60.30'

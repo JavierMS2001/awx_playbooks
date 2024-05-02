@@ -1,0 +1,15 @@
+---
+
+database_name: "TestingDB"
+backups_dir: "/home/vagrant/backups/MongoDB" # Dir to save files in backup server
+
+backup_user: "admin"
+user_password: "vagrant"
+auth_database: "admin"
+
+backup_path: "/backup/MongoDB/{{ database_name }}_backup-{{ timestamp }}"
+
+#   If you will do tests with molecule, set this
+#   with Y/y or Yes/yes.
+
+register_file: y
