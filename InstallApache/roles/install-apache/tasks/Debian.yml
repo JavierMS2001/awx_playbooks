@@ -19,6 +19,11 @@
   ufw:
           state: enabled
 
+- name: Open port 22
+  ufw:
+    rule: allow
+    port: "22"
+
 - name: Open port 80
   ufw:
           rule: allow
