@@ -17,7 +17,7 @@
 
 - name: Use mysql_secure_installation to set password.
   shell: |
-          echo -e "\nn\nY\n{{ db_root_pass }}\n{{ db_root_pass }}\nY\nn\nY\nY\n" | sudo mariadb-secure-installation
+          echo -e "\nn\nY\n{{ db_root_pass }}\n{{ db_root_pass }}\nY\nn\nY\nY\n" | sudo mysql_secure_installation
   args:
    executable: /bin/bash
   when: install.changed
