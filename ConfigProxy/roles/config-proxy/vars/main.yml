@@ -1,5 +1,6 @@
 ---
 
+rh_proxy_ip: 192.168.10.60        # RedHat proxy IP
 rh_wordpress_ip: 192.168.10.61    # Wordpress IP to RedHat proxy
 deb_wordpress_ip: 192.168.10.71   # Wordpress IP to Debian proxy
 deb_proxy_ip: 192.168.10.70       # Debian proxy IP
