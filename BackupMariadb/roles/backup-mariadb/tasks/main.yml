@@ -36,7 +36,6 @@
     dest: "{{ backups_dir }}/MariaDB/{{ ansible_host }}/"
     flat: yes
   register: fetch_result
-  when: backup is changed
 
 - name: Create register file
   copy:
