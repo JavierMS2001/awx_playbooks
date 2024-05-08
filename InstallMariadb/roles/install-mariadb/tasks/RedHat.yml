@@ -17,7 +17,7 @@
 
 - name: Use mysql_secure_installation to set password.
   shell: |
-          echo -e "\nn\nY\n{{ db_root_pass }}\n{{ db_root_pass }}\nY\nn\nY\nY\n" | sudo mysql_secure_installation
+          echo -e "\nY\n{{ db_root_pass }}\n{{ db_root_pass }}\nY\nn\nY\nY\n" | sudo mysql_secure_installation
   args:
    executable: /bin/bash
   when: install.changed
@@ -26,6 +26,7 @@
   mysql_db:
           name: "{{ database_name }}"
           login_user: "{{ db_root_user }}"
+          login_password: "{{ db_root_pass }}"
           state: present
 
 - name: Create user to database
@@ -35,6 +36,7 @@
           priv: 'bdwordpress.*:ALL,GRANT'
           host: '%'
           login_user: "{{ db_root_user }}"
+          login_password: "{{ db_root_pass }}"
           state: present
 
 - name: Enable mysql service in firewall
