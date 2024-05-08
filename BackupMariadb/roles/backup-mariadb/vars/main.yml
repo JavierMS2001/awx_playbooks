@@ -11,4 +11,4 @@ backups_dir: "/home/vagrant/backups"
 #   If you will do tests with molecule, set this
 #   with Y/y or Yes/yes.
 
-register_file: y
+register_file: n

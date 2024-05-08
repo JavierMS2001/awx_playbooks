@@ -13,7 +13,6 @@
 - name: Realizar backup de la base de datos CentOS
   mysql_db:
           login_user: root
-          login_password: vagrant
           state: dump
           name: bdwordpress
           target: "/backup/MariaDB/bdwordpress-CentOS_backup_{{ timestamp }}.sql"
