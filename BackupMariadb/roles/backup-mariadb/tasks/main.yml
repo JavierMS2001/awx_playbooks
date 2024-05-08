@@ -23,7 +23,7 @@
     state: dump
     target: "/backup/MariaDB/{{ db_name }}-{{ ansible_host }}_backup_{{ timestamp }}.sql"
   register: backup
-  when: exist is changed
+  when: exist.stat.islnk is not defined
 
 - name: Check backup
   stat:
